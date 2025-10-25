@@ -90,6 +90,106 @@ Return ONLY valid JSON, no markdown or extra text.`
   return await callGeminiAPI(prompt, 2048)
 }
 
+export async function generateEthicalImpactSummary(
+  blueprint: any,
+  solution?: any,
+  problemStatement?: any
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
+
+Blueprint: ${JSON.stringify(blueprint, null, 2)}
+${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
+${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
+
+Generate a detailed JSON ethical impact summary with the following structure:
+{
+  "overall_score": 75,
+  "bias_detection": [
+    {
+      "type": "demographic|cultural|geographic|economic|technological|gender|age",
+      "severity": "low|medium|high|critical",
+      "description": "Detailed description of the bias",
+      "affected_groups": ["group1", "group2"],
+      "mitigation_strategies": ["strategy1", "strategy2"],
+      "confidence_score": 85
+    }
+  ],
+  "ethical_concerns": [
+    {
+      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
+      "severity": "low|medium|high|critical",
+      "description": "Description of the ethical concern",
+      "impact_assessment": "Detailed impact assessment",
+      "recommended_actions": ["action1", "action2"],
+      "compliance_requirements": ["requirement1", "requirement2"],
+      "risk_level": 70
+    }
+  ],
+  "impact_analysis": {
+    "positive_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "negative_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "unintended_consequences": ["consequence1", "consequence2"],
+    "long_term_effects": ["effect1", "effect2"],
+    "stakeholder_impacts": {
+      "users": {
+        "positive": ["positive1"],
+        "negative": ["negative1"],
+        "neutral": ["neutral1"]
+      }
+    }
+  },
+  "compliance_checks": [
+    {
+      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
+      "status": "compliant|partial|non_compliant|not_applicable",
+      "requirements": ["req1", "req2"],
+      "gaps": ["gap1", "gap2"],
+      "recommendations": ["rec1", "rec2"],
+      "priority": "low|medium|high|critical"
+    }
+  ],
+  "recommendations": ["recommendation1", "recommendation2"],
+  "risk_assessment": {
+    "overall_risk": "low|medium|high|critical",
+    "risk_factors": ["factor1", "factor2"],
+    "mitigation_plan": ["plan1", "plan2"]
+  },
+  "transparency_report": {
+    "data_sources": ["source1", "source2"],
+    "methodology": ["method1", "method2"],
+    "limitations": ["limitation1", "limitation2"],
+    "assumptions": ["assumption1", "assumption2"]
+  },
+  "last_updated": "2024-01-01"
+}
+
+Guidelines:
+- Conduct comprehensive bias detection across all relevant dimensions
+- Identify ethical concerns across privacy, fairness, transparency, and safety
+- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
+- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
+- Provide actionable recommendations for ethical implementation
+- Assess overall risk level and create mitigation plans
+- Ensure transparency in methodology and data sources
+- Consider unintended consequences and long-term effects
+- Evaluate stakeholder impacts comprehensively
+- Provide specific, actionable recommendations
+
+Return ONLY valid JSON, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}
+
 export async function generateKnowledgeGraph(
   searchQuery: string,
   category: string,
@@ -182,6 +282,106 @@ Guidelines:
 - Provide realistic timelines and progress status
 - Focus on ${category === "all" ? "diverse global challenges" : `${category} challenges`}
 - ${sdgFilter ? `Prioritize solutions and problems related to SDG ${sdgFilter}` : "Include all SDG goals"}
+
+Return ONLY valid JSON, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}
+
+export async function generateEthicalImpactSummary(
+  blueprint: any,
+  solution?: any,
+  problemStatement?: any
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
+
+Blueprint: ${JSON.stringify(blueprint, null, 2)}
+${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
+${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
+
+Generate a detailed JSON ethical impact summary with the following structure:
+{
+  "overall_score": 75,
+  "bias_detection": [
+    {
+      "type": "demographic|cultural|geographic|economic|technological|gender|age",
+      "severity": "low|medium|high|critical",
+      "description": "Detailed description of the bias",
+      "affected_groups": ["group1", "group2"],
+      "mitigation_strategies": ["strategy1", "strategy2"],
+      "confidence_score": 85
+    }
+  ],
+  "ethical_concerns": [
+    {
+      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
+      "severity": "low|medium|high|critical",
+      "description": "Description of the ethical concern",
+      "impact_assessment": "Detailed impact assessment",
+      "recommended_actions": ["action1", "action2"],
+      "compliance_requirements": ["requirement1", "requirement2"],
+      "risk_level": 70
+    }
+  ],
+  "impact_analysis": {
+    "positive_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "negative_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "unintended_consequences": ["consequence1", "consequence2"],
+    "long_term_effects": ["effect1", "effect2"],
+    "stakeholder_impacts": {
+      "users": {
+        "positive": ["positive1"],
+        "negative": ["negative1"],
+        "neutral": ["neutral1"]
+      }
+    }
+  },
+  "compliance_checks": [
+    {
+      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
+      "status": "compliant|partial|non_compliant|not_applicable",
+      "requirements": ["req1", "req2"],
+      "gaps": ["gap1", "gap2"],
+      "recommendations": ["rec1", "rec2"],
+      "priority": "low|medium|high|critical"
+    }
+  ],
+  "recommendations": ["recommendation1", "recommendation2"],
+  "risk_assessment": {
+    "overall_risk": "low|medium|high|critical",
+    "risk_factors": ["factor1", "factor2"],
+    "mitigation_plan": ["plan1", "plan2"]
+  },
+  "transparency_report": {
+    "data_sources": ["source1", "source2"],
+    "methodology": ["method1", "method2"],
+    "limitations": ["limitation1", "limitation2"],
+    "assumptions": ["assumption1", "assumption2"]
+  },
+  "last_updated": "2024-01-01"
+}
+
+Guidelines:
+- Conduct comprehensive bias detection across all relevant dimensions
+- Identify ethical concerns across privacy, fairness, transparency, and safety
+- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
+- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
+- Provide actionable recommendations for ethical implementation
+- Assess overall risk level and create mitigation plans
+- Ensure transparency in methodology and data sources
+- Consider unintended consequences and long-term effects
+- Evaluate stakeholder impacts comprehensively
+- Provide specific, actionable recommendations
 
 Return ONLY valid JSON, no markdown or extra text.`
 
@@ -235,6 +435,106 @@ Return ONLY valid JSON, no markdown or extra text.`
   return await callGeminiAPI(prompt, 2048)
 }
 
+export async function generateEthicalImpactSummary(
+  blueprint: any,
+  solution?: any,
+  problemStatement?: any
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
+
+Blueprint: ${JSON.stringify(blueprint, null, 2)}
+${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
+${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
+
+Generate a detailed JSON ethical impact summary with the following structure:
+{
+  "overall_score": 75,
+  "bias_detection": [
+    {
+      "type": "demographic|cultural|geographic|economic|technological|gender|age",
+      "severity": "low|medium|high|critical",
+      "description": "Detailed description of the bias",
+      "affected_groups": ["group1", "group2"],
+      "mitigation_strategies": ["strategy1", "strategy2"],
+      "confidence_score": 85
+    }
+  ],
+  "ethical_concerns": [
+    {
+      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
+      "severity": "low|medium|high|critical",
+      "description": "Description of the ethical concern",
+      "impact_assessment": "Detailed impact assessment",
+      "recommended_actions": ["action1", "action2"],
+      "compliance_requirements": ["requirement1", "requirement2"],
+      "risk_level": 70
+    }
+  ],
+  "impact_analysis": {
+    "positive_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "negative_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "unintended_consequences": ["consequence1", "consequence2"],
+    "long_term_effects": ["effect1", "effect2"],
+    "stakeholder_impacts": {
+      "users": {
+        "positive": ["positive1"],
+        "negative": ["negative1"],
+        "neutral": ["neutral1"]
+      }
+    }
+  },
+  "compliance_checks": [
+    {
+      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
+      "status": "compliant|partial|non_compliant|not_applicable",
+      "requirements": ["req1", "req2"],
+      "gaps": ["gap1", "gap2"],
+      "recommendations": ["rec1", "rec2"],
+      "priority": "low|medium|high|critical"
+    }
+  ],
+  "recommendations": ["recommendation1", "recommendation2"],
+  "risk_assessment": {
+    "overall_risk": "low|medium|high|critical",
+    "risk_factors": ["factor1", "factor2"],
+    "mitigation_plan": ["plan1", "plan2"]
+  },
+  "transparency_report": {
+    "data_sources": ["source1", "source2"],
+    "methodology": ["method1", "method2"],
+    "limitations": ["limitation1", "limitation2"],
+    "assumptions": ["assumption1", "assumption2"]
+  },
+  "last_updated": "2024-01-01"
+}
+
+Guidelines:
+- Conduct comprehensive bias detection across all relevant dimensions
+- Identify ethical concerns across privacy, fairness, transparency, and safety
+- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
+- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
+- Provide actionable recommendations for ethical implementation
+- Assess overall risk level and create mitigation plans
+- Ensure transparency in methodology and data sources
+- Consider unintended consequences and long-term effects
+- Evaluate stakeholder impacts comprehensively
+- Provide specific, actionable recommendations
+
+Return ONLY valid JSON, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}
+
 export async function generateKnowledgeGraph(
   searchQuery: string,
   category: string,
@@ -327,6 +627,106 @@ Guidelines:
 - Provide realistic timelines and progress status
 - Focus on ${category === "all" ? "diverse global challenges" : `${category} challenges`}
 - ${sdgFilter ? `Prioritize solutions and problems related to SDG ${sdgFilter}` : "Include all SDG goals"}
+
+Return ONLY valid JSON, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}
+
+export async function generateEthicalImpactSummary(
+  blueprint: any,
+  solution?: any,
+  problemStatement?: any
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
+
+Blueprint: ${JSON.stringify(blueprint, null, 2)}
+${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
+${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
+
+Generate a detailed JSON ethical impact summary with the following structure:
+{
+  "overall_score": 75,
+  "bias_detection": [
+    {
+      "type": "demographic|cultural|geographic|economic|technological|gender|age",
+      "severity": "low|medium|high|critical",
+      "description": "Detailed description of the bias",
+      "affected_groups": ["group1", "group2"],
+      "mitigation_strategies": ["strategy1", "strategy2"],
+      "confidence_score": 85
+    }
+  ],
+  "ethical_concerns": [
+    {
+      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
+      "severity": "low|medium|high|critical",
+      "description": "Description of the ethical concern",
+      "impact_assessment": "Detailed impact assessment",
+      "recommended_actions": ["action1", "action2"],
+      "compliance_requirements": ["requirement1", "requirement2"],
+      "risk_level": 70
+    }
+  ],
+  "impact_analysis": {
+    "positive_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "negative_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "unintended_consequences": ["consequence1", "consequence2"],
+    "long_term_effects": ["effect1", "effect2"],
+    "stakeholder_impacts": {
+      "users": {
+        "positive": ["positive1"],
+        "negative": ["negative1"],
+        "neutral": ["neutral1"]
+      }
+    }
+  },
+  "compliance_checks": [
+    {
+      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
+      "status": "compliant|partial|non_compliant|not_applicable",
+      "requirements": ["req1", "req2"],
+      "gaps": ["gap1", "gap2"],
+      "recommendations": ["rec1", "rec2"],
+      "priority": "low|medium|high|critical"
+    }
+  ],
+  "recommendations": ["recommendation1", "recommendation2"],
+  "risk_assessment": {
+    "overall_risk": "low|medium|high|critical",
+    "risk_factors": ["factor1", "factor2"],
+    "mitigation_plan": ["plan1", "plan2"]
+  },
+  "transparency_report": {
+    "data_sources": ["source1", "source2"],
+    "methodology": ["method1", "method2"],
+    "limitations": ["limitation1", "limitation2"],
+    "assumptions": ["assumption1", "assumption2"]
+  },
+  "last_updated": "2024-01-01"
+}
+
+Guidelines:
+- Conduct comprehensive bias detection across all relevant dimensions
+- Identify ethical concerns across privacy, fairness, transparency, and safety
+- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
+- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
+- Provide actionable recommendations for ethical implementation
+- Assess overall risk level and create mitigation plans
+- Ensure transparency in methodology and data sources
+- Consider unintended consequences and long-term effects
+- Evaluate stakeholder impacts comprehensively
+- Provide specific, actionable recommendations
 
 Return ONLY valid JSON, no markdown or extra text.`
 
@@ -423,6 +823,106 @@ Return ONLY a valid JSON array of slides, no markdown or extra text.`
   return await callGeminiAPI(prompt, 2048)
 }
 
+export async function generateEthicalImpactSummary(
+  blueprint: any,
+  solution?: any,
+  problemStatement?: any
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
+
+Blueprint: ${JSON.stringify(blueprint, null, 2)}
+${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
+${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
+
+Generate a detailed JSON ethical impact summary with the following structure:
+{
+  "overall_score": 75,
+  "bias_detection": [
+    {
+      "type": "demographic|cultural|geographic|economic|technological|gender|age",
+      "severity": "low|medium|high|critical",
+      "description": "Detailed description of the bias",
+      "affected_groups": ["group1", "group2"],
+      "mitigation_strategies": ["strategy1", "strategy2"],
+      "confidence_score": 85
+    }
+  ],
+  "ethical_concerns": [
+    {
+      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
+      "severity": "low|medium|high|critical",
+      "description": "Description of the ethical concern",
+      "impact_assessment": "Detailed impact assessment",
+      "recommended_actions": ["action1", "action2"],
+      "compliance_requirements": ["requirement1", "requirement2"],
+      "risk_level": 70
+    }
+  ],
+  "impact_analysis": {
+    "positive_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "negative_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "unintended_consequences": ["consequence1", "consequence2"],
+    "long_term_effects": ["effect1", "effect2"],
+    "stakeholder_impacts": {
+      "users": {
+        "positive": ["positive1"],
+        "negative": ["negative1"],
+        "neutral": ["neutral1"]
+      }
+    }
+  },
+  "compliance_checks": [
+    {
+      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
+      "status": "compliant|partial|non_compliant|not_applicable",
+      "requirements": ["req1", "req2"],
+      "gaps": ["gap1", "gap2"],
+      "recommendations": ["rec1", "rec2"],
+      "priority": "low|medium|high|critical"
+    }
+  ],
+  "recommendations": ["recommendation1", "recommendation2"],
+  "risk_assessment": {
+    "overall_risk": "low|medium|high|critical",
+    "risk_factors": ["factor1", "factor2"],
+    "mitigation_plan": ["plan1", "plan2"]
+  },
+  "transparency_report": {
+    "data_sources": ["source1", "source2"],
+    "methodology": ["method1", "method2"],
+    "limitations": ["limitation1", "limitation2"],
+    "assumptions": ["assumption1", "assumption2"]
+  },
+  "last_updated": "2024-01-01"
+}
+
+Guidelines:
+- Conduct comprehensive bias detection across all relevant dimensions
+- Identify ethical concerns across privacy, fairness, transparency, and safety
+- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
+- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
+- Provide actionable recommendations for ethical implementation
+- Assess overall risk level and create mitigation plans
+- Ensure transparency in methodology and data sources
+- Consider unintended consequences and long-term effects
+- Evaluate stakeholder impacts comprehensively
+- Provide specific, actionable recommendations
+
+Return ONLY valid JSON, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}
+
 export async function generateKnowledgeGraph(
   searchQuery: string,
   category: string,
@@ -521,6 +1021,106 @@ Return ONLY valid JSON, no markdown or extra text.`
   return await callGeminiAPI(prompt, 2048)
 }
 
+export async function generateEthicalImpactSummary(
+  blueprint: any,
+  solution?: any,
+  problemStatement?: any
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
+
+Blueprint: ${JSON.stringify(blueprint, null, 2)}
+${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
+${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
+
+Generate a detailed JSON ethical impact summary with the following structure:
+{
+  "overall_score": 75,
+  "bias_detection": [
+    {
+      "type": "demographic|cultural|geographic|economic|technological|gender|age",
+      "severity": "low|medium|high|critical",
+      "description": "Detailed description of the bias",
+      "affected_groups": ["group1", "group2"],
+      "mitigation_strategies": ["strategy1", "strategy2"],
+      "confidence_score": 85
+    }
+  ],
+  "ethical_concerns": [
+    {
+      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
+      "severity": "low|medium|high|critical",
+      "description": "Description of the ethical concern",
+      "impact_assessment": "Detailed impact assessment",
+      "recommended_actions": ["action1", "action2"],
+      "compliance_requirements": ["requirement1", "requirement2"],
+      "risk_level": 70
+    }
+  ],
+  "impact_analysis": {
+    "positive_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "negative_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "unintended_consequences": ["consequence1", "consequence2"],
+    "long_term_effects": ["effect1", "effect2"],
+    "stakeholder_impacts": {
+      "users": {
+        "positive": ["positive1"],
+        "negative": ["negative1"],
+        "neutral": ["neutral1"]
+      }
+    }
+  },
+  "compliance_checks": [
+    {
+      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
+      "status": "compliant|partial|non_compliant|not_applicable",
+      "requirements": ["req1", "req2"],
+      "gaps": ["gap1", "gap2"],
+      "recommendations": ["rec1", "rec2"],
+      "priority": "low|medium|high|critical"
+    }
+  ],
+  "recommendations": ["recommendation1", "recommendation2"],
+  "risk_assessment": {
+    "overall_risk": "low|medium|high|critical",
+    "risk_factors": ["factor1", "factor2"],
+    "mitigation_plan": ["plan1", "plan2"]
+  },
+  "transparency_report": {
+    "data_sources": ["source1", "source2"],
+    "methodology": ["method1", "method2"],
+    "limitations": ["limitation1", "limitation2"],
+    "assumptions": ["assumption1", "assumption2"]
+  },
+  "last_updated": "2024-01-01"
+}
+
+Guidelines:
+- Conduct comprehensive bias detection across all relevant dimensions
+- Identify ethical concerns across privacy, fairness, transparency, and safety
+- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
+- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
+- Provide actionable recommendations for ethical implementation
+- Assess overall risk level and create mitigation plans
+- Ensure transparency in methodology and data sources
+- Consider unintended consequences and long-term effects
+- Evaluate stakeholder impacts comprehensively
+- Provide specific, actionable recommendations
+
+Return ONLY valid JSON, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}
+
 export async function generateSolutions(
   problemStatement: any, 
   solutionCount: number, 
@@ -581,6 +1181,106 @@ Guidelines:
 - Provide realistic timelines and resource requirements
 
 Return ONLY a valid JSON array of solutions, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}
+
+export async function generateEthicalImpactSummary(
+  blueprint: any,
+  solution?: any,
+  problemStatement?: any
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
+
+Blueprint: ${JSON.stringify(blueprint, null, 2)}
+${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
+${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
+
+Generate a detailed JSON ethical impact summary with the following structure:
+{
+  "overall_score": 75,
+  "bias_detection": [
+    {
+      "type": "demographic|cultural|geographic|economic|technological|gender|age",
+      "severity": "low|medium|high|critical",
+      "description": "Detailed description of the bias",
+      "affected_groups": ["group1", "group2"],
+      "mitigation_strategies": ["strategy1", "strategy2"],
+      "confidence_score": 85
+    }
+  ],
+  "ethical_concerns": [
+    {
+      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
+      "severity": "low|medium|high|critical",
+      "description": "Description of the ethical concern",
+      "impact_assessment": "Detailed impact assessment",
+      "recommended_actions": ["action1", "action2"],
+      "compliance_requirements": ["requirement1", "requirement2"],
+      "risk_level": 70
+    }
+  ],
+  "impact_analysis": {
+    "positive_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "negative_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "unintended_consequences": ["consequence1", "consequence2"],
+    "long_term_effects": ["effect1", "effect2"],
+    "stakeholder_impacts": {
+      "users": {
+        "positive": ["positive1"],
+        "negative": ["negative1"],
+        "neutral": ["neutral1"]
+      }
+    }
+  },
+  "compliance_checks": [
+    {
+      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
+      "status": "compliant|partial|non_compliant|not_applicable",
+      "requirements": ["req1", "req2"],
+      "gaps": ["gap1", "gap2"],
+      "recommendations": ["rec1", "rec2"],
+      "priority": "low|medium|high|critical"
+    }
+  ],
+  "recommendations": ["recommendation1", "recommendation2"],
+  "risk_assessment": {
+    "overall_risk": "low|medium|high|critical",
+    "risk_factors": ["factor1", "factor2"],
+    "mitigation_plan": ["plan1", "plan2"]
+  },
+  "transparency_report": {
+    "data_sources": ["source1", "source2"],
+    "methodology": ["method1", "method2"],
+    "limitations": ["limitation1", "limitation2"],
+    "assumptions": ["assumption1", "assumption2"]
+  },
+  "last_updated": "2024-01-01"
+}
+
+Guidelines:
+- Conduct comprehensive bias detection across all relevant dimensions
+- Identify ethical concerns across privacy, fairness, transparency, and safety
+- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
+- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
+- Provide actionable recommendations for ethical implementation
+- Assess overall risk level and create mitigation plans
+- Ensure transparency in methodology and data sources
+- Consider unintended consequences and long-term effects
+- Evaluate stakeholder impacts comprehensively
+- Provide specific, actionable recommendations
+
+Return ONLY valid JSON, no markdown or extra text.`
 
   return await callGeminiAPI(prompt, 2048)
 }
@@ -677,6 +1377,106 @@ Guidelines:
 - Provide realistic timelines and progress status
 - Focus on ${category === "all" ? "diverse global challenges" : `${category} challenges`}
 - ${sdgFilter ? `Prioritize solutions and problems related to SDG ${sdgFilter}` : "Include all SDG goals"}
+
+Return ONLY valid JSON, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}
+
+export async function generateEthicalImpactSummary(
+  blueprint: any,
+  solution?: any,
+  problemStatement?: any
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
+
+Blueprint: ${JSON.stringify(blueprint, null, 2)}
+${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
+${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
+
+Generate a detailed JSON ethical impact summary with the following structure:
+{
+  "overall_score": 75,
+  "bias_detection": [
+    {
+      "type": "demographic|cultural|geographic|economic|technological|gender|age",
+      "severity": "low|medium|high|critical",
+      "description": "Detailed description of the bias",
+      "affected_groups": ["group1", "group2"],
+      "mitigation_strategies": ["strategy1", "strategy2"],
+      "confidence_score": 85
+    }
+  ],
+  "ethical_concerns": [
+    {
+      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
+      "severity": "low|medium|high|critical",
+      "description": "Description of the ethical concern",
+      "impact_assessment": "Detailed impact assessment",
+      "recommended_actions": ["action1", "action2"],
+      "compliance_requirements": ["requirement1", "requirement2"],
+      "risk_level": 70
+    }
+  ],
+  "impact_analysis": {
+    "positive_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "negative_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "unintended_consequences": ["consequence1", "consequence2"],
+    "long_term_effects": ["effect1", "effect2"],
+    "stakeholder_impacts": {
+      "users": {
+        "positive": ["positive1"],
+        "negative": ["negative1"],
+        "neutral": ["neutral1"]
+      }
+    }
+  },
+  "compliance_checks": [
+    {
+      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
+      "status": "compliant|partial|non_compliant|not_applicable",
+      "requirements": ["req1", "req2"],
+      "gaps": ["gap1", "gap2"],
+      "recommendations": ["rec1", "rec2"],
+      "priority": "low|medium|high|critical"
+    }
+  ],
+  "recommendations": ["recommendation1", "recommendation2"],
+  "risk_assessment": {
+    "overall_risk": "low|medium|high|critical",
+    "risk_factors": ["factor1", "factor2"],
+    "mitigation_plan": ["plan1", "plan2"]
+  },
+  "transparency_report": {
+    "data_sources": ["source1", "source2"],
+    "methodology": ["method1", "method2"],
+    "limitations": ["limitation1", "limitation2"],
+    "assumptions": ["assumption1", "assumption2"]
+  },
+  "last_updated": "2024-01-01"
+}
+
+Guidelines:
+- Conduct comprehensive bias detection across all relevant dimensions
+- Identify ethical concerns across privacy, fairness, transparency, and safety
+- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
+- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
+- Provide actionable recommendations for ethical implementation
+- Assess overall risk level and create mitigation plans
+- Ensure transparency in methodology and data sources
+- Consider unintended consequences and long-term effects
+- Evaluate stakeholder impacts comprehensively
+- Provide specific, actionable recommendations
 
 Return ONLY valid JSON, no markdown or extra text.`
 
@@ -808,6 +1608,106 @@ Return ONLY valid JSON, no markdown or extra text.`
   return await callGeminiAPI(prompt, 2048)
 }
 
+export async function generateEthicalImpactSummary(
+  blueprint: any,
+  solution?: any,
+  problemStatement?: any
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
+
+Blueprint: ${JSON.stringify(blueprint, null, 2)}
+${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
+${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
+
+Generate a detailed JSON ethical impact summary with the following structure:
+{
+  "overall_score": 75,
+  "bias_detection": [
+    {
+      "type": "demographic|cultural|geographic|economic|technological|gender|age",
+      "severity": "low|medium|high|critical",
+      "description": "Detailed description of the bias",
+      "affected_groups": ["group1", "group2"],
+      "mitigation_strategies": ["strategy1", "strategy2"],
+      "confidence_score": 85
+    }
+  ],
+  "ethical_concerns": [
+    {
+      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
+      "severity": "low|medium|high|critical",
+      "description": "Description of the ethical concern",
+      "impact_assessment": "Detailed impact assessment",
+      "recommended_actions": ["action1", "action2"],
+      "compliance_requirements": ["requirement1", "requirement2"],
+      "risk_level": 70
+    }
+  ],
+  "impact_analysis": {
+    "positive_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "negative_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "unintended_consequences": ["consequence1", "consequence2"],
+    "long_term_effects": ["effect1", "effect2"],
+    "stakeholder_impacts": {
+      "users": {
+        "positive": ["positive1"],
+        "negative": ["negative1"],
+        "neutral": ["neutral1"]
+      }
+    }
+  },
+  "compliance_checks": [
+    {
+      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
+      "status": "compliant|partial|non_compliant|not_applicable",
+      "requirements": ["req1", "req2"],
+      "gaps": ["gap1", "gap2"],
+      "recommendations": ["rec1", "rec2"],
+      "priority": "low|medium|high|critical"
+    }
+  ],
+  "recommendations": ["recommendation1", "recommendation2"],
+  "risk_assessment": {
+    "overall_risk": "low|medium|high|critical",
+    "risk_factors": ["factor1", "factor2"],
+    "mitigation_plan": ["plan1", "plan2"]
+  },
+  "transparency_report": {
+    "data_sources": ["source1", "source2"],
+    "methodology": ["method1", "method2"],
+    "limitations": ["limitation1", "limitation2"],
+    "assumptions": ["assumption1", "assumption2"]
+  },
+  "last_updated": "2024-01-01"
+}
+
+Guidelines:
+- Conduct comprehensive bias detection across all relevant dimensions
+- Identify ethical concerns across privacy, fairness, transparency, and safety
+- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
+- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
+- Provide actionable recommendations for ethical implementation
+- Assess overall risk level and create mitigation plans
+- Ensure transparency in methodology and data sources
+- Consider unintended consequences and long-term effects
+- Evaluate stakeholder impacts comprehensively
+- Provide specific, actionable recommendations
+
+Return ONLY valid JSON, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}
+
 export async function generateKnowledgeGraph(
   searchQuery: string,
   category: string,
@@ -900,6 +1800,106 @@ Guidelines:
 - Provide realistic timelines and progress status
 - Focus on ${category === "all" ? "diverse global challenges" : `${category} challenges`}
 - ${sdgFilter ? `Prioritize solutions and problems related to SDG ${sdgFilter}` : "Include all SDG goals"}
+
+Return ONLY valid JSON, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}
+
+export async function generateEthicalImpactSummary(
+  blueprint: any,
+  solution?: any,
+  problemStatement?: any
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
+
+Blueprint: ${JSON.stringify(blueprint, null, 2)}
+${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
+${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
+
+Generate a detailed JSON ethical impact summary with the following structure:
+{
+  "overall_score": 75,
+  "bias_detection": [
+    {
+      "type": "demographic|cultural|geographic|economic|technological|gender|age",
+      "severity": "low|medium|high|critical",
+      "description": "Detailed description of the bias",
+      "affected_groups": ["group1", "group2"],
+      "mitigation_strategies": ["strategy1", "strategy2"],
+      "confidence_score": 85
+    }
+  ],
+  "ethical_concerns": [
+    {
+      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
+      "severity": "low|medium|high|critical",
+      "description": "Description of the ethical concern",
+      "impact_assessment": "Detailed impact assessment",
+      "recommended_actions": ["action1", "action2"],
+      "compliance_requirements": ["requirement1", "requirement2"],
+      "risk_level": 70
+    }
+  ],
+  "impact_analysis": {
+    "positive_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "negative_impacts": {
+      "social": ["impact1", "impact2"],
+      "environmental": ["impact1", "impact2"],
+      "economic": ["impact1", "impact2"],
+      "technological": ["impact1", "impact2"]
+    },
+    "unintended_consequences": ["consequence1", "consequence2"],
+    "long_term_effects": ["effect1", "effect2"],
+    "stakeholder_impacts": {
+      "users": {
+        "positive": ["positive1"],
+        "negative": ["negative1"],
+        "neutral": ["neutral1"]
+      }
+    }
+  },
+  "compliance_checks": [
+    {
+      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
+      "status": "compliant|partial|non_compliant|not_applicable",
+      "requirements": ["req1", "req2"],
+      "gaps": ["gap1", "gap2"],
+      "recommendations": ["rec1", "rec2"],
+      "priority": "low|medium|high|critical"
+    }
+  ],
+  "recommendations": ["recommendation1", "recommendation2"],
+  "risk_assessment": {
+    "overall_risk": "low|medium|high|critical",
+    "risk_factors": ["factor1", "factor2"],
+    "mitigation_plan": ["plan1", "plan2"]
+  },
+  "transparency_report": {
+    "data_sources": ["source1", "source2"],
+    "methodology": ["method1", "method2"],
+    "limitations": ["limitation1", "limitation2"],
+    "assumptions": ["assumption1", "assumption2"]
+  },
+  "last_updated": "2024-01-01"
+}
+
+Guidelines:
+- Conduct comprehensive bias detection across all relevant dimensions
+- Identify ethical concerns across privacy, fairness, transparency, and safety
+- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
+- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
+- Provide actionable recommendations for ethical implementation
+- Assess overall risk level and create mitigation plans
+- Ensure transparency in methodology and data sources
+- Consider unintended consequences and long-term effects
+- Evaluate stakeholder impacts comprehensively
+- Provide specific, actionable recommendations
 
 Return ONLY valid JSON, no markdown or extra text.`
 

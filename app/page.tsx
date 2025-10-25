@@ -12,6 +12,7 @@ import { ProblemSynthesizer } from "@/components/problem-synthesizer"
 import { SolutionComposer } from "@/components/solution-composer"
 import { RoadmapBuilder } from "@/components/roadmap-builder"
 import { KnowledgeGraphViewer } from "@/components/knowledge-graph-viewer"
+import { EthicalImpactSummary } from "@/components/ethical-impact-summary"
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false)
@@ -468,29 +469,39 @@ export default function Home() {
               <VisualPrototypeGenerator blueprint={blueprint} />
             </div>
 
-            {/* Pitch Deck Generator */}
-            <div>
-              <h3 className="text-xl font-bold mb-4">Pitch Deck</h3>
-              <PitchDeckGenerator blueprint={blueprint} />
-            </div>
+                    {/* Pitch Deck Generator */}
+                    <div>
+                      <h3 className="text-xl font-bold mb-4">Pitch Deck</h3>
+                      <PitchDeckGenerator blueprint={blueprint} />
+                    </div>
 
-            {/* Call to Action */}
-            <Card className="p-8 bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border-border/50">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-xl font-bold mb-2">Ready to collaborate?</h3>
-                  <p className="text-muted-foreground">
-                    Join our co-creation room to refine this blueprint with AI agents and community members.
-                  </p>
-                </div>
-                <Button 
-                  className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
-                  onClick={() => setShowCoCreationRoom(true)}
-                >
-                  Start Co-Creation
-                </Button>
-              </div>
-            </Card>
+                    {/* Ethical Impact Summary */}
+                    <div>
+                      <h3 className="text-xl font-bold mb-4">Ethical Impact Assessment</h3>
+                      <EthicalImpactSummary 
+                        blueprint={blueprint}
+                        solution={selectedSolution}
+                        problemStatement={synthesizedProblem}
+                      />
+                    </div>
+
+                    {/* Call to Action */}
+                    <Card className="p-8 bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border-border/50">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-xl font-bold mb-2">Ready to collaborate?</h3>
+                          <p className="text-muted-foreground">
+                            Join our co-creation room to refine this blueprint with AI agents and community members.
+                          </p>
+                        </div>
+                        <Button
+                          className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
+                          onClick={() => setShowCoCreationRoom(true)}
+                        >
+                          Start Co-Creation
+                        </Button>
+                      </div>
+                    </Card>
           </div>
         </div>
       )}
