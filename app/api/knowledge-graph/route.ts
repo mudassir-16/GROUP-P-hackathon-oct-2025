@@ -1,63 +1,60 @@
-import { generateText } from "ai"
+import { generateKnowledgeGraph } from '@/lib/gemini-api'
+import { fetchSDGData, calculateSDGAlignment } from '@/lib/sdg-api'
 
 export async function POST(request: Request) {
   try {
-    const { blueprintId, blueprintContent } = await request.json()
+    const { searchQuery, category, sdgFilter } = await request.json()
 
-    // Generate knowledge graph using AI
-    const { text: graphText } = await generateText({
-      model: "openai/gpt-4-turbo",
-      prompt: `Analyze this innovation blueprint and generate a knowledge graph structure.
+    // Generate comprehensive knowledge graph using Gemini API
+    const result = await generateKnowledgeGraph(searchQuery, category, sdgFilter)
 
-Blueprint:
-${JSON.stringify(blueprintContent, null, 2)}
-
-Return a JSON object with:
-{
-  "nodes": [
-    {
-      "id": "unique_id",
-      "label": "Node name",
-      "type": "blueprint|solution|concept|sdg|resource",
-      "color": "hex_color",
-      "size": 10-30
+    if (!result.success) {
+      throw new Error(result.error || "Failed to generate knowledge graph")
     }
-  ],
-  "edges": [
-    {
-      "source": "node_id",
-      "target": "node_id",
-      "label": "relationship",
-      "strength": 0.5-1.0
-    }
-  ],
-  "relatedBlueprints": [
-    {
-      "id": "blueprint_id",
-      "title": "Title",
-      "similarity": 0.85,
-      "reason": "Why it's related"
-    }
-  ]
-}
 
-Return ONLY valid JSON.`,
-    })
+    const knowledgeGraphText = result.text!
 
-    const graph = JSON.parse(graphText)
+    // Parse the generated knowledge graph
+    const knowledgeGraph = JSON.parse(knowledgeGraphText)
+
+    // Fetch SDG data and enhance the graph
+    try {
+      const sdgData = await fetchSDGData()
+      knowledgeGraph.sdgs = sdgData.map(sdg => ({
+        id: sdg.goal,
+        title: sdg.title,
+        description: sdg.description,
+        targets: sdg.indicators.map(indicator => indicator.target),
+        indicators: sdg.indicators.map(indicator => indicator.title),
+        related_problems: [],
+        related_solutions: [],
+        progress_status: "on_track" as const,
+        priority_areas: [],
+        funding_requirements: 0,
+        timeline: "2030"
+      }))
+    } catch (error) {
+      console.error("Error fetching SDG data:", error)
+      // Continue without SDG data enhancement
+    }
+
+    // Validate the response structure
+    if (!knowledgeGraph.problems || !Array.isArray(knowledgeGraph.problems)) {
+      throw new Error("Invalid knowledge graph structure")
+    }
 
     return Response.json({
       success: true,
-      graph,
+      knowledgeGraph,
     })
   } catch (error) {
-    console.error("Knowledge graph error:", error)
+    console.error("Knowledge graph generation error:", error)
     return Response.json(
       {
         success: false,
         error: error instanceof Error ? error.message : "Failed to generate knowledge graph",
       },
-      { status: 500 },
+      { status: 500 }
     )
   }
 }

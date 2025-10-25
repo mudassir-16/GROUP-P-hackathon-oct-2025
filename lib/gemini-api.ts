@@ -90,6 +90,104 @@ Return ONLY valid JSON, no markdown or extra text.`
   return await callGeminiAPI(prompt, 2048)
 }
 
+export async function generateKnowledgeGraph(
+  searchQuery: string,
+  category: string,
+  sdgFilter: number | null
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert in global development and knowledge management. Generate a comprehensive knowledge graph that connects global problems, existing solutions, and SDG goals.
+
+Search Parameters:
+- Query: ${searchQuery || "Global challenges and solutions"}
+- Category: ${category}
+- SDG Filter: ${sdgFilter ? `SDG ${sdgFilter}` : "All SDGs"}
+
+Generate a detailed JSON knowledge graph with the following structure:
+{
+  "problems": [
+    {
+      "id": "problem-id",
+      "title": "Problem Title",
+      "description": "Detailed problem description",
+      "category": "climate|health|education|poverty|inequality|technology|environment|governance|infrastructure",
+      "severity": "low|medium|high|critical",
+      "affected_population": 1000000,
+      "geographic_scope": ["region1", "region2"],
+      "sdg_goals": [1, 2, 3],
+      "related_problems": ["problem-id-1", "problem-id-2"],
+      "existing_solutions": ["solution-id-1", "solution-id-2"],
+      "data_sources": ["source1", "source2"],
+      "last_updated": "2024-01-01"
+    }
+  ],
+  "solutions": [
+    {
+      "id": "solution-id",
+      "title": "Solution Title",
+      "description": "Detailed solution description",
+      "type": "technology|policy|social|economic",
+      "effectiveness_score": 85,
+      "implementation_status": "concept|pilot|scaled|mature",
+      "target_problems": ["problem-id-1", "problem-id-2"],
+      "sdg_goals": [1, 2, 3],
+      "stakeholders": ["stakeholder1", "stakeholder2"],
+      "geographic_reach": ["region1", "region2"],
+      "funding_sources": ["source1", "source2"],
+      "success_metrics": ["metric1", "metric2"],
+      "challenges": ["challenge1", "challenge2"],
+      "scalability_potential": 80,
+      "cost_effectiveness": 75,
+      "last_updated": "2024-01-01"
+    }
+  ],
+  "sdgs": [
+    {
+      "id": 1,
+      "title": "No Poverty",
+      "description": "End poverty in all its forms everywhere",
+      "targets": ["target1", "target2"],
+      "indicators": ["indicator1", "indicator2"],
+      "related_problems": ["problem-id-1", "problem-id-2"],
+      "related_solutions": ["solution-id-1", "solution-id-2"],
+      "progress_status": "on_track|challenging|off_track",
+      "priority_areas": ["area1", "area2"],
+      "funding_requirements": 1000000,
+      "timeline": "2030"
+    }
+  ],
+  "connections": [
+    {
+      "from": "problem-id",
+      "to": "solution-id",
+      "type": "addresses|supports|conflicts|enables|requires",
+      "strength": 0.8,
+      "description": "Connection description"
+    }
+  ],
+  "last_updated": "2024-01-01",
+  "total_nodes": 50,
+  "total_connections": 100
+}
+
+Guidelines:
+- Generate 10-15 global problems across different categories
+- Include 15-20 existing solutions with diverse types and effectiveness scores
+- Connect problems to relevant SDG goals (1-17)
+- Create meaningful connections between problems and solutions
+- Include realistic data about affected populations and geographic scope
+- Ensure solutions address the problems they target
+- Include both successful and emerging solutions
+- Consider global, regional, and local perspectives
+- Include diverse stakeholders and funding sources
+- Provide realistic timelines and progress status
+- Focus on ${category === "all" ? "diverse global challenges" : `${category} challenges`}
+- ${sdgFilter ? `Prioritize solutions and problems related to SDG ${sdgFilter}` : "Include all SDG goals"}
+
+Return ONLY valid JSON, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}
+
 export async function generateBlueprint(problemStatement: string, context: string, targetAudience: string, constraints: string): Promise<GeminiResponse> {
   const prompt = `You are an expert innovation consultant. Generate a comprehensive innovation blueprint for the following challenge:
 
@@ -131,6 +229,104 @@ Provide a detailed JSON response with the following structure:
   "estimated_budget": "Budget range",
   "team_composition": ["Role 1", "Role 2"]
 }
+
+Return ONLY valid JSON, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}
+
+export async function generateKnowledgeGraph(
+  searchQuery: string,
+  category: string,
+  sdgFilter: number | null
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert in global development and knowledge management. Generate a comprehensive knowledge graph that connects global problems, existing solutions, and SDG goals.
+
+Search Parameters:
+- Query: ${searchQuery || "Global challenges and solutions"}
+- Category: ${category}
+- SDG Filter: ${sdgFilter ? `SDG ${sdgFilter}` : "All SDGs"}
+
+Generate a detailed JSON knowledge graph with the following structure:
+{
+  "problems": [
+    {
+      "id": "problem-id",
+      "title": "Problem Title",
+      "description": "Detailed problem description",
+      "category": "climate|health|education|poverty|inequality|technology|environment|governance|infrastructure",
+      "severity": "low|medium|high|critical",
+      "affected_population": 1000000,
+      "geographic_scope": ["region1", "region2"],
+      "sdg_goals": [1, 2, 3],
+      "related_problems": ["problem-id-1", "problem-id-2"],
+      "existing_solutions": ["solution-id-1", "solution-id-2"],
+      "data_sources": ["source1", "source2"],
+      "last_updated": "2024-01-01"
+    }
+  ],
+  "solutions": [
+    {
+      "id": "solution-id",
+      "title": "Solution Title",
+      "description": "Detailed solution description",
+      "type": "technology|policy|social|economic",
+      "effectiveness_score": 85,
+      "implementation_status": "concept|pilot|scaled|mature",
+      "target_problems": ["problem-id-1", "problem-id-2"],
+      "sdg_goals": [1, 2, 3],
+      "stakeholders": ["stakeholder1", "stakeholder2"],
+      "geographic_reach": ["region1", "region2"],
+      "funding_sources": ["source1", "source2"],
+      "success_metrics": ["metric1", "metric2"],
+      "challenges": ["challenge1", "challenge2"],
+      "scalability_potential": 80,
+      "cost_effectiveness": 75,
+      "last_updated": "2024-01-01"
+    }
+  ],
+  "sdgs": [
+    {
+      "id": 1,
+      "title": "No Poverty",
+      "description": "End poverty in all its forms everywhere",
+      "targets": ["target1", "target2"],
+      "indicators": ["indicator1", "indicator2"],
+      "related_problems": ["problem-id-1", "problem-id-2"],
+      "related_solutions": ["solution-id-1", "solution-id-2"],
+      "progress_status": "on_track|challenging|off_track",
+      "priority_areas": ["area1", "area2"],
+      "funding_requirements": 1000000,
+      "timeline": "2030"
+    }
+  ],
+  "connections": [
+    {
+      "from": "problem-id",
+      "to": "solution-id",
+      "type": "addresses|supports|conflicts|enables|requires",
+      "strength": 0.8,
+      "description": "Connection description"
+    }
+  ],
+  "last_updated": "2024-01-01",
+  "total_nodes": 50,
+  "total_connections": 100
+}
+
+Guidelines:
+- Generate 10-15 global problems across different categories
+- Include 15-20 existing solutions with diverse types and effectiveness scores
+- Connect problems to relevant SDG goals (1-17)
+- Create meaningful connections between problems and solutions
+- Include realistic data about affected populations and geographic scope
+- Ensure solutions address the problems they target
+- Include both successful and emerging solutions
+- Consider global, regional, and local perspectives
+- Include diverse stakeholders and funding sources
+- Provide realistic timelines and progress status
+- Focus on ${category === "all" ? "diverse global challenges" : `${category} challenges`}
+- ${sdgFilter ? `Prioritize solutions and problems related to SDG ${sdgFilter}` : "Include all SDG goals"}
 
 Return ONLY valid JSON, no markdown or extra text.`
 
@@ -227,6 +423,104 @@ Return ONLY a valid JSON array of slides, no markdown or extra text.`
   return await callGeminiAPI(prompt, 2048)
 }
 
+export async function generateKnowledgeGraph(
+  searchQuery: string,
+  category: string,
+  sdgFilter: number | null
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert in global development and knowledge management. Generate a comprehensive knowledge graph that connects global problems, existing solutions, and SDG goals.
+
+Search Parameters:
+- Query: ${searchQuery || "Global challenges and solutions"}
+- Category: ${category}
+- SDG Filter: ${sdgFilter ? `SDG ${sdgFilter}` : "All SDGs"}
+
+Generate a detailed JSON knowledge graph with the following structure:
+{
+  "problems": [
+    {
+      "id": "problem-id",
+      "title": "Problem Title",
+      "description": "Detailed problem description",
+      "category": "climate|health|education|poverty|inequality|technology|environment|governance|infrastructure",
+      "severity": "low|medium|high|critical",
+      "affected_population": 1000000,
+      "geographic_scope": ["region1", "region2"],
+      "sdg_goals": [1, 2, 3],
+      "related_problems": ["problem-id-1", "problem-id-2"],
+      "existing_solutions": ["solution-id-1", "solution-id-2"],
+      "data_sources": ["source1", "source2"],
+      "last_updated": "2024-01-01"
+    }
+  ],
+  "solutions": [
+    {
+      "id": "solution-id",
+      "title": "Solution Title",
+      "description": "Detailed solution description",
+      "type": "technology|policy|social|economic",
+      "effectiveness_score": 85,
+      "implementation_status": "concept|pilot|scaled|mature",
+      "target_problems": ["problem-id-1", "problem-id-2"],
+      "sdg_goals": [1, 2, 3],
+      "stakeholders": ["stakeholder1", "stakeholder2"],
+      "geographic_reach": ["region1", "region2"],
+      "funding_sources": ["source1", "source2"],
+      "success_metrics": ["metric1", "metric2"],
+      "challenges": ["challenge1", "challenge2"],
+      "scalability_potential": 80,
+      "cost_effectiveness": 75,
+      "last_updated": "2024-01-01"
+    }
+  ],
+  "sdgs": [
+    {
+      "id": 1,
+      "title": "No Poverty",
+      "description": "End poverty in all its forms everywhere",
+      "targets": ["target1", "target2"],
+      "indicators": ["indicator1", "indicator2"],
+      "related_problems": ["problem-id-1", "problem-id-2"],
+      "related_solutions": ["solution-id-1", "solution-id-2"],
+      "progress_status": "on_track|challenging|off_track",
+      "priority_areas": ["area1", "area2"],
+      "funding_requirements": 1000000,
+      "timeline": "2030"
+    }
+  ],
+  "connections": [
+    {
+      "from": "problem-id",
+      "to": "solution-id",
+      "type": "addresses|supports|conflicts|enables|requires",
+      "strength": 0.8,
+      "description": "Connection description"
+    }
+  ],
+  "last_updated": "2024-01-01",
+  "total_nodes": 50,
+  "total_connections": 100
+}
+
+Guidelines:
+- Generate 10-15 global problems across different categories
+- Include 15-20 existing solutions with diverse types and effectiveness scores
+- Connect problems to relevant SDG goals (1-17)
+- Create meaningful connections between problems and solutions
+- Include realistic data about affected populations and geographic scope
+- Ensure solutions address the problems they target
+- Include both successful and emerging solutions
+- Consider global, regional, and local perspectives
+- Include diverse stakeholders and funding sources
+- Provide realistic timelines and progress status
+- Focus on ${category === "all" ? "diverse global challenges" : `${category} challenges`}
+- ${sdgFilter ? `Prioritize solutions and problems related to SDG ${sdgFilter}` : "Include all SDG goals"}
+
+Return ONLY valid JSON, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}
+
 export async function generateSolutions(
   problemStatement: any, 
   solutionCount: number, 
@@ -287,6 +581,104 @@ Guidelines:
 - Provide realistic timelines and resource requirements
 
 Return ONLY a valid JSON array of solutions, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}
+
+export async function generateKnowledgeGraph(
+  searchQuery: string,
+  category: string,
+  sdgFilter: number | null
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert in global development and knowledge management. Generate a comprehensive knowledge graph that connects global problems, existing solutions, and SDG goals.
+
+Search Parameters:
+- Query: ${searchQuery || "Global challenges and solutions"}
+- Category: ${category}
+- SDG Filter: ${sdgFilter ? `SDG ${sdgFilter}` : "All SDGs"}
+
+Generate a detailed JSON knowledge graph with the following structure:
+{
+  "problems": [
+    {
+      "id": "problem-id",
+      "title": "Problem Title",
+      "description": "Detailed problem description",
+      "category": "climate|health|education|poverty|inequality|technology|environment|governance|infrastructure",
+      "severity": "low|medium|high|critical",
+      "affected_population": 1000000,
+      "geographic_scope": ["region1", "region2"],
+      "sdg_goals": [1, 2, 3],
+      "related_problems": ["problem-id-1", "problem-id-2"],
+      "existing_solutions": ["solution-id-1", "solution-id-2"],
+      "data_sources": ["source1", "source2"],
+      "last_updated": "2024-01-01"
+    }
+  ],
+  "solutions": [
+    {
+      "id": "solution-id",
+      "title": "Solution Title",
+      "description": "Detailed solution description",
+      "type": "technology|policy|social|economic",
+      "effectiveness_score": 85,
+      "implementation_status": "concept|pilot|scaled|mature",
+      "target_problems": ["problem-id-1", "problem-id-2"],
+      "sdg_goals": [1, 2, 3],
+      "stakeholders": ["stakeholder1", "stakeholder2"],
+      "geographic_reach": ["region1", "region2"],
+      "funding_sources": ["source1", "source2"],
+      "success_metrics": ["metric1", "metric2"],
+      "challenges": ["challenge1", "challenge2"],
+      "scalability_potential": 80,
+      "cost_effectiveness": 75,
+      "last_updated": "2024-01-01"
+    }
+  ],
+  "sdgs": [
+    {
+      "id": 1,
+      "title": "No Poverty",
+      "description": "End poverty in all its forms everywhere",
+      "targets": ["target1", "target2"],
+      "indicators": ["indicator1", "indicator2"],
+      "related_problems": ["problem-id-1", "problem-id-2"],
+      "related_solutions": ["solution-id-1", "solution-id-2"],
+      "progress_status": "on_track|challenging|off_track",
+      "priority_areas": ["area1", "area2"],
+      "funding_requirements": 1000000,
+      "timeline": "2030"
+    }
+  ],
+  "connections": [
+    {
+      "from": "problem-id",
+      "to": "solution-id",
+      "type": "addresses|supports|conflicts|enables|requires",
+      "strength": 0.8,
+      "description": "Connection description"
+    }
+  ],
+  "last_updated": "2024-01-01",
+  "total_nodes": 50,
+  "total_connections": 100
+}
+
+Guidelines:
+- Generate 10-15 global problems across different categories
+- Include 15-20 existing solutions with diverse types and effectiveness scores
+- Connect problems to relevant SDG goals (1-17)
+- Create meaningful connections between problems and solutions
+- Include realistic data about affected populations and geographic scope
+- Ensure solutions address the problems they target
+- Include both successful and emerging solutions
+- Consider global, regional, and local perspectives
+- Include diverse stakeholders and funding sources
+- Provide realistic timelines and progress status
+- Focus on ${category === "all" ? "diverse global challenges" : `${category} challenges`}
+- ${sdgFilter ? `Prioritize solutions and problems related to SDG ${sdgFilter}` : "Include all SDG goals"}
+
+Return ONLY valid JSON, no markdown or extra text.`
 
   return await callGeminiAPI(prompt, 2048)
 }
@@ -410,6 +802,104 @@ Guidelines:
 - Ensure milestones have clear dependencies
 - Consider resource constraints and team capabilities
 - Align with solution requirements and problem context
+
+Return ONLY valid JSON, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}
+
+export async function generateKnowledgeGraph(
+  searchQuery: string,
+  category: string,
+  sdgFilter: number | null
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert in global development and knowledge management. Generate a comprehensive knowledge graph that connects global problems, existing solutions, and SDG goals.
+
+Search Parameters:
+- Query: ${searchQuery || "Global challenges and solutions"}
+- Category: ${category}
+- SDG Filter: ${sdgFilter ? `SDG ${sdgFilter}` : "All SDGs"}
+
+Generate a detailed JSON knowledge graph with the following structure:
+{
+  "problems": [
+    {
+      "id": "problem-id",
+      "title": "Problem Title",
+      "description": "Detailed problem description",
+      "category": "climate|health|education|poverty|inequality|technology|environment|governance|infrastructure",
+      "severity": "low|medium|high|critical",
+      "affected_population": 1000000,
+      "geographic_scope": ["region1", "region2"],
+      "sdg_goals": [1, 2, 3],
+      "related_problems": ["problem-id-1", "problem-id-2"],
+      "existing_solutions": ["solution-id-1", "solution-id-2"],
+      "data_sources": ["source1", "source2"],
+      "last_updated": "2024-01-01"
+    }
+  ],
+  "solutions": [
+    {
+      "id": "solution-id",
+      "title": "Solution Title",
+      "description": "Detailed solution description",
+      "type": "technology|policy|social|economic",
+      "effectiveness_score": 85,
+      "implementation_status": "concept|pilot|scaled|mature",
+      "target_problems": ["problem-id-1", "problem-id-2"],
+      "sdg_goals": [1, 2, 3],
+      "stakeholders": ["stakeholder1", "stakeholder2"],
+      "geographic_reach": ["region1", "region2"],
+      "funding_sources": ["source1", "source2"],
+      "success_metrics": ["metric1", "metric2"],
+      "challenges": ["challenge1", "challenge2"],
+      "scalability_potential": 80,
+      "cost_effectiveness": 75,
+      "last_updated": "2024-01-01"
+    }
+  ],
+  "sdgs": [
+    {
+      "id": 1,
+      "title": "No Poverty",
+      "description": "End poverty in all its forms everywhere",
+      "targets": ["target1", "target2"],
+      "indicators": ["indicator1", "indicator2"],
+      "related_problems": ["problem-id-1", "problem-id-2"],
+      "related_solutions": ["solution-id-1", "solution-id-2"],
+      "progress_status": "on_track|challenging|off_track",
+      "priority_areas": ["area1", "area2"],
+      "funding_requirements": 1000000,
+      "timeline": "2030"
+    }
+  ],
+  "connections": [
+    {
+      "from": "problem-id",
+      "to": "solution-id",
+      "type": "addresses|supports|conflicts|enables|requires",
+      "strength": 0.8,
+      "description": "Connection description"
+    }
+  ],
+  "last_updated": "2024-01-01",
+  "total_nodes": 50,
+  "total_connections": 100
+}
+
+Guidelines:
+- Generate 10-15 global problems across different categories
+- Include 15-20 existing solutions with diverse types and effectiveness scores
+- Connect problems to relevant SDG goals (1-17)
+- Create meaningful connections between problems and solutions
+- Include realistic data about affected populations and geographic scope
+- Ensure solutions address the problems they target
+- Include both successful and emerging solutions
+- Consider global, regional, and local perspectives
+- Include diverse stakeholders and funding sources
+- Provide realistic timelines and progress status
+- Focus on ${category === "all" ? "diverse global challenges" : `${category} challenges`}
+- ${sdgFilter ? `Prioritize solutions and problems related to SDG ${sdgFilter}` : "Include all SDG goals"}
 
 Return ONLY valid JSON, no markdown or extra text.`
 

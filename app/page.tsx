@@ -11,6 +11,7 @@ import { ImpactScorecard } from "@/components/impact-scorecard"
 import { ProblemSynthesizer } from "@/components/problem-synthesizer"
 import { SolutionComposer } from "@/components/solution-composer"
 import { RoadmapBuilder } from "@/components/roadmap-builder"
+import { KnowledgeGraphViewer } from "@/components/knowledge-graph-viewer"
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false)
@@ -29,6 +30,7 @@ export default function Home() {
   const [showRoadmapBuilder, setShowRoadmapBuilder] = useState(false)
   const [selectedSolution, setSelectedSolution] = useState(null)
   const [generatedRoadmap, setGeneratedRoadmap] = useState(null)
+  const [showKnowledgeGraph, setShowKnowledgeGraph] = useState(false)
 
   const handleProblemSynthesized = (problemStatement: any) => {
     setSynthesizedProblem(problemStatement)
@@ -131,21 +133,30 @@ export default function Home() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700"
-                  onClick={() => setShowProblemSynthesizer(true)}
-                >
-                  <Sparkles className="w-5 h-5 mr-2" />
-                  Start with Problem Analysis
-                </Button>
+                        <Button
+                          size="lg"
+                          className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700"
+                          onClick={() => setShowProblemSynthesizer(true)}
+                        >
+                          <Sparkles className="w-5 h-5 mr-2" />
+                          Start with Problem Analysis
+                        </Button>
                 <Button
                   size="lg"
                   className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
                   onClick={() => setShowForm(true)}
                 >
                   <Zap className="w-5 h-5 mr-2" />
-                  Generate Blueprint Directly
+                          Generate Blueprint Directly
+                </Button>
+                        <Button
+                          size="lg"
+                          variant="outline"
+                          className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-0"
+                          onClick={() => setShowKnowledgeGraph(true)}
+                        >
+                          <Globe className="w-5 h-5 mr-2" />
+                          Explore Knowledge Graph
                 </Button>
               </div>
 
@@ -554,6 +565,22 @@ export default function Home() {
             problemStatement={synthesizedProblem}
             onRoadmapGenerated={handleRoadmapGenerated}
           />
+        </div>
+      )}
+
+      {/* Knowledge Graph Viewer */}
+      {showKnowledgeGraph && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-6">
+            <Button
+              variant="outline"
+              onClick={() => setShowKnowledgeGraph(false)}
+              className="mb-4"
+            >
+              ← Back to Home
+            </Button>
+          </div>
+          <KnowledgeGraphViewer />
         </div>
       )}
     </div>
