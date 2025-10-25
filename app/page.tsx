@@ -3,11 +3,12 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Sparkles, Zap, Users, TrendingUp } from "lucide-react"
+import { Sparkles, Zap, Users, TrendingUp, Globe } from "lucide-react"
 import { CoCreationRoom } from "@/components/co-creation-room"
 import { VisualPrototypeGenerator } from "@/components/visual-prototype-generator"
 import { PitchDeckGenerator } from "@/components/pitch-deck-generator"
 import { ImpactScorecard } from "@/components/impact-scorecard"
+import { ProblemSynthesizer } from "@/components/problem-synthesizer"
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false)
@@ -19,6 +20,21 @@ export default function Home() {
     targetRegion: ""
   })
   const [showCoCreationRoom, setShowCoCreationRoom] = useState(false)
+  const [showProblemSynthesizer, setShowProblemSynthesizer] = useState(false)
+  const [synthesizedProblem, setSynthesizedProblem] = useState(null)
+
+  const handleProblemSynthesized = (problemStatement: any) => {
+    setSynthesizedProblem(problemStatement)
+    // Pre-fill the form with synthesized problem data
+    setFormData({
+      challengeArea: problemStatement.title,
+      specificProblem: problemStatement.description,
+      targetRegion: problemStatement.scope
+    })
+    // Move to blueprint generation
+    setShowProblemSynthesizer(false)
+    setShowForm(true)
+  }
 
   const generateBlueprint = async () => {
     if (!formData.challengeArea || !formData.specificProblem) {
@@ -92,14 +108,19 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
                   size="lg"
+                  className="bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700"
+                  onClick={() => setShowProblemSynthesizer(true)}
+                >
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Start with Problem Analysis
+                </Button>
+                <Button
+                  size="lg"
                   className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
                   onClick={() => setShowForm(true)}
                 >
                   <Zap className="w-5 h-5 mr-2" />
-                  Start Creating
-                </Button>
-                <Button size="lg" variant="outline">
-                  Watch Demo
+                  Generate Blueprint Directly
                 </Button>
               </div>
 
@@ -445,6 +466,25 @@ export default function Home() {
           blueprintTitle={formData.specificProblem || "Generated Blueprint"}
           onBack={() => setShowCoCreationRoom(false)}
         />
+      )}
+
+      {/* Problem Synthesizer */}
+      {showProblemSynthesizer && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-6">
+            <Button
+              variant="outline"
+              onClick={() => setShowProblemSynthesizer(false)}
+              className="mb-4"
+            >
+              ← Back to Home
+            </Button>
+          </div>
+          <ProblemSynthesizer 
+            onProblemSynthesized={handleProblemSynthesized}
+            initialChallenge={formData.challengeArea}
+          />
+        </div>
       )}
     </div>
   )
