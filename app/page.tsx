@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card"
 import { Sparkles, Zap, Users, TrendingUp } from "lucide-react"
 import { CoCreationRoom } from "@/components/co-creation-room"
 import { VisualPrototypeGenerator } from "@/components/visual-prototype-generator"
+import { PitchDeckGenerator } from "@/components/pitch-deck-generator"
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false)
@@ -352,6 +353,12 @@ export default function Home() {
             <div>
               <h3 className="text-xl font-bold mb-4">Visual Prototypes</h3>
               <VisualPrototypeGenerator blueprint={blueprint} />
+            </div>
+
+            {/* Pitch Deck Generator */}
+            <div>
+              <h3 className="text-xl font-bold mb-4">Pitch Deck</h3>
+              <PitchDeckGenerator blueprint={blueprint} />
             </div>
 
             {/* Call to Action */}
