@@ -1,7 +1,6 @@
 "use client"
 
-import type React from "react"
-import { useState, useEffect } from "react"
+import React, { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -96,17 +95,17 @@ export function BlueprintRegistry({ blueprints }: BlueprintRegistryProps) {
   }, [searchTerm, selectedTags, selectedSDGs, sortBy, blueprints])
 
   const handleTagToggle = (tag: string) => {
-    setSelectedTags(prev => 
+    setSelectedTags((prev: string[]) => 
       prev.includes(tag) 
-        ? prev.filter(t => t !== tag)
+        ? prev.filter((t: string) => t !== tag)
         : [...prev, tag]
     )
   }
 
   const handleSDGToggle = (sdg: number) => {
-    setSelectedSDGs(prev => 
+    setSelectedSDGs((prev: number[]) => 
       prev.includes(sdg) 
-        ? prev.filter(s => s !== sdg)
+        ? prev.filter((s: number) => s !== sdg)
         : [...prev, sdg]
     )
   }
@@ -159,7 +158,7 @@ export function BlueprintRegistry({ blueprints }: BlueprintRegistryProps) {
             <Input
               placeholder="Search blueprints..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
               className="pl-10"
             />
           </div>
@@ -211,7 +210,7 @@ export function BlueprintRegistry({ blueprints }: BlueprintRegistryProps) {
               <label className="text-sm font-semibold mb-2 block">Sort By</label>
               <select
                 value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSortBy(e.target.value as "newest" | "popular" | "impact")}
                 className="w-full p-2 bg-muted/50 border border-border rounded-lg text-sm"
               >
                 <option value="newest">Newest</option>
@@ -225,7 +224,7 @@ export function BlueprintRegistry({ blueprints }: BlueprintRegistryProps) {
 
       {/* Blueprints Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredBlueprints.map(blueprint => (
+        {filteredBlueprints.map((blueprint: BlueprintRegistryItem) => (
           <Card key={blueprint.id} className="p-6 bg-card/50 backdrop-blur border-border/50 hover:border-border transition-colors">
             <div className="space-y-4">
               {/* Header */}
@@ -249,7 +248,7 @@ export function BlueprintRegistry({ blueprints }: BlueprintRegistryProps) {
 
               {/* Tags */}
               <div className="flex flex-wrap gap-1">
-                {blueprint.tags.slice(0, 3).map(tag => (
+                {blueprint.tags.slice(0, 3).map((tag: string) => (
                   <span key={tag} className="px-2 py-1 bg-muted text-muted-foreground text-xs rounded">
                     {tag}
                   </span>
@@ -263,7 +262,7 @@ export function BlueprintRegistry({ blueprints }: BlueprintRegistryProps) {
 
               {/* SDG Alignment */}
               <div className="flex flex-wrap gap-1">
-                {blueprint.sdgAlignment.slice(0, 4).map(sdg => (
+                {blueprint.sdgAlignment.slice(0, 4).map((sdg: number) => (
                   <span key={sdg} className={`px-2 py-1 text-xs rounded ${getSDGColor(sdg)}`}>
                     SDG {sdg}
                   </span>

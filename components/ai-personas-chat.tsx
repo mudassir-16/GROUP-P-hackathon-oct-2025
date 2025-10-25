@@ -1,8 +1,6 @@
 "use client"
 
-import type React from "react"
-
-import { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
@@ -120,8 +118,8 @@ export function AiPersonasChat({ blueprint }: AiPersonasChatProps) {
             <button
               key={persona.key}
               onClick={() =>
-                setSelectedPersonas((prev) =>
-                  prev.includes(persona.key) ? prev.filter((p) => p !== persona.key) : [...prev, persona.key],
+                setSelectedPersonas((prev: string[]) =>
+                  prev.includes(persona.key) ? prev.filter((p: string) => p !== persona.key) : [...prev, persona.key],
                 )
               }
               className={`p-4 rounded-lg border-2 transition-all ${

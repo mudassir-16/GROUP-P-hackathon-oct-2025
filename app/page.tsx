@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Sparkles, Zap, Users, TrendingUp } from "lucide-react"
 import { ProblemInputForm } from "@/components/problem-input-form"
-import { MainDashboard } from "@/components/main-dashboard"
+import { SimpleBlueprintPreview } from "@/components/simple-blueprint-preview"
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false)
@@ -124,8 +124,8 @@ export default function Home() {
         />
       )}
 
-      {/* Main Dashboard */}
-      {blueprint && <MainDashboard blueprint={blueprint} onBack={() => setBlueprint(null)} />}
+      {/* Blueprint Preview */}
+      {blueprint && <SimpleBlueprintPreview blueprint={blueprint} onBack={() => setBlueprint(null)} />}
     </main>
   )
 }

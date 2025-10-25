@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ArrowLeft, Download, Share2, Zap, AlertCircle, CheckCircle2, Users, Target } from "lucide-react"
