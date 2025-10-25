@@ -226,3 +226,67 @@ Return ONLY a valid JSON array of slides, no markdown or extra text.`
 
   return await callGeminiAPI(prompt, 2048)
 }
+
+export async function generateSolutions(
+  problemStatement: any, 
+  solutionCount: number, 
+  innovationFocus: string, 
+  techPreference: string, 
+  budgetRange: string
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert innovation consultant and solution architect. Generate ${solutionCount} creative solution concepts for the following problem statement:
+
+Problem Statement: ${JSON.stringify(problemStatement, null, 2)}
+
+Generation Parameters:
+- Innovation Focus: ${innovationFocus}
+- Tech Preference: ${techPreference}
+- Budget Range: ${budgetRange}
+
+For each solution, provide a detailed JSON response with the following structure:
+{
+  "id": "unique-solution-id",
+  "title": "Creative solution title",
+  "description": "Detailed solution description",
+  "innovation_level": "incremental|moderate|breakthrough",
+  "feasibility_score": 85,
+  "impact_potential": 90,
+  "uniqueness_score": 75,
+  "tech_stack": [
+    {
+      "category": "Frontend",
+      "technologies": ["React", "TypeScript", "TailwindCSS"],
+      "rationale": "Modern, scalable frontend stack"
+    },
+    {
+      "category": "Backend",
+      "technologies": ["Node.js", "Express", "PostgreSQL"],
+      "rationale": "Robust backend infrastructure"
+    }
+  ],
+  "implementation_approach": "Step-by-step implementation strategy",
+  "key_features": ["Feature 1", "Feature 2", "Feature 3"],
+  "target_users": ["Primary user group", "Secondary user group"],
+  "competitive_advantages": ["Unique advantage 1", "Unique advantage 2"],
+  "risks": ["Risk 1", "Risk 2"],
+  "success_metrics": ["Metric 1", "Metric 2", "Metric 3"],
+  "estimated_timeline": "6-12 months",
+  "resource_requirements": ["Resource 1", "Resource 2", "Resource 3"],
+  "monetization_strategy": "Revenue generation approach",
+  "scalability_potential": 85
+}
+
+Guidelines:
+- Generate ${solutionCount} distinct solution concepts
+- Vary innovation levels based on the focus parameter
+- Select appropriate tech stacks based on preference and budget
+- Ensure solutions are feasible and impactful
+- Include modern, relevant technologies
+- Consider scalability and sustainability
+- Address the core problem effectively
+- Provide realistic timelines and resource requirements
+
+Return ONLY a valid JSON array of solutions, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}

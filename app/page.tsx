@@ -9,6 +9,7 @@ import { VisualPrototypeGenerator } from "@/components/visual-prototype-generato
 import { PitchDeckGenerator } from "@/components/pitch-deck-generator"
 import { ImpactScorecard } from "@/components/impact-scorecard"
 import { ProblemSynthesizer } from "@/components/problem-synthesizer"
+import { SolutionComposer } from "@/components/solution-composer"
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false)
@@ -22,17 +23,29 @@ export default function Home() {
   const [showCoCreationRoom, setShowCoCreationRoom] = useState(false)
   const [showProblemSynthesizer, setShowProblemSynthesizer] = useState(false)
   const [synthesizedProblem, setSynthesizedProblem] = useState(null)
+  const [showSolutionComposer, setShowSolutionComposer] = useState(false)
+  const [generatedSolutions, setGeneratedSolutions] = useState(null)
 
   const handleProblemSynthesized = (problemStatement: any) => {
     setSynthesizedProblem(problemStatement)
-    // Pre-fill the form with synthesized problem data
-    setFormData({
-      challengeArea: problemStatement.title,
-      specificProblem: problemStatement.description,
-      targetRegion: problemStatement.scope
-    })
-    // Move to blueprint generation
+    // Move to solution composer
     setShowProblemSynthesizer(false)
+    setShowSolutionComposer(true)
+  }
+
+  const handleSolutionsGenerated = (solutions: any[]) => {
+    setGeneratedSolutions(solutions)
+    // Move to blueprint generation with the best solution
+    const bestSolution = solutions.reduce((best, current) => 
+      (current.feasibility_score + current.impact_potential) > (best.feasibility_score + best.impact_potential) 
+        ? current : best
+    )
+    setFormData({
+      challengeArea: synthesizedProblem?.title || "Generated Challenge",
+      specificProblem: `${synthesizedProblem?.description || ""}\n\nSelected Solution: ${bestSolution.title}\n${bestSolution.description}`,
+      targetRegion: synthesizedProblem?.scope || "Global"
+    })
+    setShowSolutionComposer(false)
     setShowForm(true)
   }
 
@@ -483,6 +496,28 @@ export default function Home() {
           <ProblemSynthesizer 
             onProblemSynthesized={handleProblemSynthesized}
             initialChallenge={formData.challengeArea}
+          />
+        </div>
+      )}
+
+      {/* Solution Composer */}
+      {showSolutionComposer && synthesizedProblem && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-6">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowSolutionComposer(false)
+                setShowProblemSynthesizer(true)
+              }}
+              className="mb-4"
+            >
+              ← Back to Problem Analysis
+            </Button>
+          </div>
+          <SolutionComposer 
+            problemStatement={synthesizedProblem}
+            onSolutionsGenerated={handleSolutionsGenerated}
           />
         </div>
       )}
