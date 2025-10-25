@@ -10,7 +10,7 @@ import {
   Download, 
   Share2, 
   Star, 
-  Fork, 
+  GitBranch, 
   Eye, 
   Calendar,
   Tag,
@@ -282,7 +282,7 @@ export function BlueprintRegistry({ blueprints }: BlueprintRegistryProps) {
                     <span>{blueprint.stars}</span>
                   </div>
                   <div className="flex items-center gap-1">
-                    <Fork className="w-4 h-4 text-blue-500" />
+                    <GitBranch className="w-4 h-4 text-blue-500" />
                     <span>{blueprint.forks}</span>
                   </div>
                   <div className="flex items-center gap-1">
@@ -298,7 +298,7 @@ export function BlueprintRegistry({ blueprints }: BlueprintRegistryProps) {
               {/* Actions */}
               <div className="flex gap-2 pt-2">
                 <Button variant="outline" size="sm" className="flex-1">
-                  <Download className="w-4 h-4 mr-2" />
+                  <GitBranch className="w-4 h-4 mr-2" />
                   Fork
                 </Button>
                 <Button variant="outline" size="sm" className="flex-1">
