@@ -2,7 +2,7 @@
 export const API_CONFIG = {
   // Gemini Configuration
   GEMINI: {
-    API_KEY: process.env.GEMINI_API_KEY || '',
+    API_KEY: process.env.GEMINI_API_KEY || 'AIzaSyA6zy6EpfxxbFX2BNELCd37amzDXG8xyUE',
     MODEL: 'gemini-1.5-pro',
     MAX_TOKENS: 2048,
     TEMPERATURE: 0.7,
