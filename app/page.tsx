@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Sparkles, Zap, Users, TrendingUp } from "lucide-react"
+import { CoCreationRoom } from "@/components/co-creation-room"
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false)
@@ -14,6 +15,7 @@ export default function Home() {
     specificProblem: "",
     targetRegion: ""
   })
+  const [showCoCreationRoom, setShowCoCreationRoom] = useState(false)
 
   const generateBlueprint = async () => {
     if (!formData.challengeArea || !formData.specificProblem) {
@@ -354,13 +356,25 @@ export default function Home() {
                     Join our co-creation room to refine this blueprint with AI agents and community members.
                   </p>
                 </div>
-                <Button className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700">
+                <Button 
+                  className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
+                  onClick={() => setShowCoCreationRoom(true)}
+                >
                   Start Co-Creation
                 </Button>
               </div>
             </Card>
           </div>
         </div>
+      )}
+
+      {/* Co-Creation Room */}
+      {showCoCreationRoom && blueprint && (
+        <CoCreationRoom 
+          blueprintId="current-blueprint" 
+          blueprintTitle={formData.specificProblem || "Generated Blueprint"}
+          onBack={() => setShowCoCreationRoom(false)}
+        />
       )}
     </div>
   )

@@ -37,9 +37,10 @@ interface RoomNote {
 interface CoCreationRoomProps {
   blueprintId: string
   blueprintTitle: string
+  onBack?: () => void
 }
 
-export function CoCreationRoom({ blueprintId, blueprintTitle }: CoCreationRoomProps) {
+export function CoCreationRoom({ blueprintId, blueprintTitle, onBack }: CoCreationRoomProps) {
   const [members, setMembers] = useState<RoomMember[]>([
     { id: "1", name: "You", avatar: "👤", role: "owner", status: "online" },
     { id: "2", name: "Sarah Chen", avatar: "👩‍💼", role: "editor", status: "online" },
@@ -131,9 +132,16 @@ export function CoCreationRoom({ blueprintId, blueprintTitle }: CoCreationRoomPr
       {/* Room Header */}
       <Card className="p-6 bg-card/50 backdrop-blur border-border/50">
         <div className="flex items-center justify-between mb-4">
-          <div>
-            <h2 className="text-2xl font-bold">{blueprintTitle}</h2>
-            <p className="text-sm text-muted-foreground">Co-Creation Room</p>
+          <div className="flex items-center gap-4">
+            {onBack && (
+              <Button variant="outline" size="sm" onClick={onBack}>
+                ← Back
+              </Button>
+            )}
+            <div>
+              <h2 className="text-2xl font-bold">{blueprintTitle}</h2>
+              <p className="text-sm text-muted-foreground">Co-Creation Room</p>
+            </div>
           </div>
           <Button
             variant="outline"
