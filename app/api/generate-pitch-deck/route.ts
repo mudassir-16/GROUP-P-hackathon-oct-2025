@@ -1,0 +1,46 @@
+import { generateText } from "ai"
+
+export async function POST(request: Request) {
+  try {
+    const { blueprint } = await request.json()
+
+    const { text: pitchDeckText } = await generateText({
+      model: "openai/gpt-4-turbo",
+      prompt: `Generate a professional 5-slide pitch deck for this innovation blueprint:
+
+${JSON.stringify(blueprint, null, 2)}
+
+Create slides with the following structure:
+1. Title Slide - Problem statement and solution overview
+2. Problem Slide - Deep dive into the challenge and its impact
+3. Solution Slide - Your proposed solution and key features
+4. Impact Slide - Expected outcomes, metrics, and SDG alignment
+5. Roadmap Slide - Implementation timeline and next steps
+
+For each slide, provide:
+- slideNumber: number
+- title: string
+- content: string (detailed content for the slide)
+- type: "title" | "problem" | "solution" | "impact" | "roadmap"
+
+Return ONLY a valid JSON array of slides, no markdown or extra text.`,
+    })
+
+    // Parse the generated pitch deck
+    const slides = JSON.parse(pitchDeckText)
+
+    return Response.json({
+      success: true,
+      slides,
+    })
+  } catch (error) {
+    console.error("Pitch deck generation error:", error)
+    return Response.json(
+      {
+        success: false,
+        error: error instanceof Error ? error.message : "Failed to generate pitch deck",
+      },
+      { status: 500 },
+    )
+  }
+}
