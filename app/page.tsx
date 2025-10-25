@@ -7,6 +7,7 @@ import { Sparkles, Zap, Users, TrendingUp } from "lucide-react"
 import { CoCreationRoom } from "@/components/co-creation-room"
 import { VisualPrototypeGenerator } from "@/components/visual-prototype-generator"
 import { PitchDeckGenerator } from "@/components/pitch-deck-generator"
+import { ImpactScorecard } from "@/components/impact-scorecard"
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false)
@@ -346,6 +347,61 @@ export default function Home() {
                     </Card>
                   )}
                 </div>
+              </div>
+            )}
+
+            {/* Impact Scorecard */}
+            {blueprint && (
+              <div>
+                <h3 className="text-xl font-bold mb-4">Impact Analysis</h3>
+                <ImpactScorecard
+                  blueprintTitle={formData.specificProblem || "Generated Blueprint"}
+                  overallScore={blueprint.sdg_alignment?.[0]?.alignment_score || 85}
+                  metrics={[
+                    {
+                      name: "Social Impact",
+                      value: 85,
+                      target: 100,
+                      unit: "%",
+                      icon: <Users className="w-5 h-5" />,
+                      color: "text-blue-500"
+                    },
+                    {
+                      name: "Environmental Impact",
+                      value: 78,
+                      target: 100,
+                      unit: "%",
+                      icon: <Globe className="w-5 h-5" />,
+                      color: "text-green-500"
+                    },
+                    {
+                      name: "Economic Impact",
+                      value: 92,
+                      target: 100,
+                      unit: "%",
+                      icon: <TrendingUp className="w-5 h-5" />,
+                      color: "text-purple-500"
+                    },
+                    {
+                      name: "Innovation Score",
+                      value: 88,
+                      target: 100,
+                      unit: "%",
+                      icon: <Zap className="w-5 h-5" />,
+                      color: "text-orange-500"
+                    }
+                  ]}
+                  sdgAlignment={blueprint.sdg_alignment?.map(sdg => ({
+                    sdg: sdg.sdg,
+                    score: sdg.alignment_score
+                  })) || []}
+                  timelineData={[
+                    { month: "Month 1", impact: 20 },
+                    { month: "Month 3", impact: 45 },
+                    { month: "Month 6", impact: 70 },
+                    { month: "Month 12", impact: 85 }
+                  ]}
+                />
               </div>
             )}
 
