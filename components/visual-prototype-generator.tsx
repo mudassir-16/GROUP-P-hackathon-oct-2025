@@ -3,7 +3,7 @@
 import React, { useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Loader2, Download, Share2, Eye, Palette, Code, Architecture } from "lucide-react"
+import { Loader2, Download, Share2, Eye, Palette, Code, Building } from "lucide-react"
 
 interface VisualPrototypeGeneratorProps {
   blueprint: any
@@ -26,7 +26,7 @@ export function VisualPrototypeGenerator({ blueprint }: VisualPrototypeGenerator
     {
       key: "architecture",
       name: "System Architecture",
-      icon: Architecture,
+      icon: Building,
       description: "Technical system design and infrastructure",
     },
     {
@@ -195,7 +195,7 @@ export function VisualPrototypeGenerator({ blueprint }: VisualPrototypeGenerator
               </div>
               <div className="bg-muted/50 rounded-lg p-4">
                 <div className="text-center text-muted-foreground">
-                  <Architecture className="w-12 h-12 mx-auto mb-2" />
+                  <Building className="w-12 h-12 mx-auto mb-2" />
                   <p className="text-sm">Architecture diagram will be generated here</p>
                 </div>
               </div>
