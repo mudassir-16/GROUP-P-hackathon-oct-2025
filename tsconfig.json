@@ -32,7 +32,8 @@
       "node",
       "react",
       "react-dom"
-    ]
+    ],
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "next-env.d.ts",

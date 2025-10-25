@@ -4,15 +4,13 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Sparkles, Zap, Users, TrendingUp } from "lucide-react"
-import { ProblemInputForm } from "@/components/problem-input-form"
-import { SimpleBlueprintPreview } from "@/components/simple-blueprint-preview"
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false)
   const [blueprint, setBlueprint] = useState(null)
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
       <nav className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
@@ -116,16 +114,170 @@ export default function Home() {
 
       {/* Problem Input Form */}
       {showForm && !blueprint && (
-        <ProblemInputForm
-          onSubmit={(data) => {
-            setBlueprint(data)
-          }}
-          onBack={() => setShowForm(false)}
-        />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <Card className="p-8 bg-card/50 backdrop-blur border-border/50">
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold">Describe Your Global Challenge</h2>
+                <Button variant="outline" onClick={() => setShowForm(false)}>
+                  ← Back
+                </Button>
+              </div>
+              
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">Challenge Area</label>
+                  <input
+                    type="text"
+                    placeholder="e.g., Climate change, Education access, Healthcare equity"
+                    className="w-full p-3 border border-border rounded-lg bg-background"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2">Specific Problem</label>
+                  <textarea
+                    placeholder="Describe the specific problem you want to solve..."
+                    className="w-full p-3 border border-border rounded-lg bg-background h-32"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2">Target Region</label>
+                  <input
+                    type="text"
+                    placeholder="e.g., Global, Sub-Saharan Africa, Southeast Asia"
+                    className="w-full p-3 border border-border rounded-lg bg-background"
+                  />
+                </div>
+              </div>
+              
+              <Button
+                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
+                onClick={() => setBlueprint({
+                  problemAnalysis: "AI-generated problem analysis will appear here...",
+                  solutions: [
+                    {
+                      title: "Solution 1",
+                      description: "AI-generated solution description...",
+                      impact: 85,
+                      timeline: "6 months",
+                      resources: ["Technical team", "Funding", "Partnerships"]
+                    }
+                  ],
+                  roadmap: [
+                    {
+                      phase: "Phase 1: Research & Planning",
+                      description: "Conduct market research and stakeholder analysis",
+                      duration: "2 months",
+                      tasks: "5 tasks"
+                    }
+                  ]
+                })}
+              >
+                <Zap className="w-5 h-5 mr-2" />
+                Generate Blueprint
+              </Button>
+            </div>
+          </Card>
+        </div>
       )}
 
       {/* Blueprint Preview */}
-      {blueprint && <SimpleBlueprintPreview blueprint={blueprint} onBack={() => setBlueprint(null)} />}
-    </main>
+      {blueprint && (
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="space-y-8">
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-bold">Generated Blueprint</h2>
+              <Button variant="outline" onClick={() => setBlueprint(null)}>
+                ← Back
+              </Button>
+            </div>
+
+            {/* Problem Analysis */}
+            <Card className="p-8 bg-card/50 backdrop-blur border-border/50">
+              <h3 className="text-xl font-bold mb-4">Problem Analysis</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                {blueprint.problemAnalysis}
+              </p>
+            </Card>
+
+            {/* Solutions */}
+            <div>
+              <h3 className="text-xl font-bold mb-4">Proposed Solutions</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {blueprint.solutions?.map((solution, i) => (
+                  <Card key={i} className="p-6 bg-card/50 backdrop-blur border-border/50">
+                    <div className="flex items-start justify-between mb-4">
+                      <h4 className="font-semibold text-lg">{solution.title}</h4>
+                      <div className="bg-cyan-500/20 text-cyan-400 px-3 py-1 rounded-full text-sm font-medium">
+                        {solution.impact}% Impact
+                      </div>
+                    </div>
+                    <p className="text-muted-foreground mb-4">{solution.description}</p>
+                    <div className="space-y-3">
+                      <div>
+                        <div className="text-xs text-muted-foreground mb-1">Timeline</div>
+                        <div className="text-sm font-medium">{solution.timeline}</div>
+                      </div>
+                      <div>
+                        <div className="text-xs text-muted-foreground mb-2">Required Resources</div>
+                        <div className="flex flex-wrap gap-2">
+                          {solution.resources?.map((r, j) => (
+                            <span key={j} className="bg-muted text-muted-foreground text-xs px-2 py-1 rounded">
+                              {r}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+            {/* Implementation Roadmap */}
+            <div>
+              <h3 className="text-xl font-bold mb-4">Implementation Roadmap</h3>
+              <Card className="p-6 bg-card/50 backdrop-blur border-border/50">
+                <div className="space-y-4">
+                  {blueprint.roadmap?.map((phase, i) => (
+                    <div key={i} className="flex items-start gap-4">
+                      <div className="flex-shrink-0">
+                        <div className="flex items-center justify-center h-10 w-10 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600">
+                          <span className="text-white font-semibold text-sm">{i + 1}</span>
+                        </div>
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="font-semibold mb-1">{phase.phase}</h4>
+                        <p className="text-sm text-muted-foreground mb-2">{phase.description}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {phase.duration} • {phase.tasks}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </div>
+
+            {/* Call to Action */}
+            <Card className="p-8 bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border-border/50">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-xl font-bold mb-2">Ready to collaborate?</h3>
+                  <p className="text-muted-foreground">
+                    Join our co-creation room to refine this blueprint with AI agents and community members.
+                  </p>
+                </div>
+                <Button className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700">
+                  Start Co-Creation
+                </Button>
+              </div>
+            </Card>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
