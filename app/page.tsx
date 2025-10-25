@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Sparkles, Zap, Users, TrendingUp } from "lucide-react"
 import { CoCreationRoom } from "@/components/co-creation-room"
+import { VisualPrototypeGenerator } from "@/components/visual-prototype-generator"
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false)
@@ -346,6 +347,12 @@ export default function Home() {
                 </div>
               </div>
             )}
+
+            {/* Visual Prototype Generator */}
+            <div>
+              <h3 className="text-xl font-bold mb-4">Visual Prototypes</h3>
+              <VisualPrototypeGenerator blueprint={blueprint} />
+            </div>
 
             {/* Call to Action */}
             <Card className="p-8 bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border-border/50">
