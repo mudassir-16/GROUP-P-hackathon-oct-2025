@@ -8,6 +8,47 @@ import { Sparkles, Zap, Users, TrendingUp } from "lucide-react"
 export default function Home() {
   const [showForm, setShowForm] = useState(false)
   const [blueprint, setBlueprint] = useState(null)
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [formData, setFormData] = useState({
+    challengeArea: "",
+    specificProblem: "",
+    targetRegion: ""
+  })
+
+  const generateBlueprint = async () => {
+    if (!formData.challengeArea || !formData.specificProblem) {
+      alert("Please fill in all required fields")
+      return
+    }
+
+    setIsGenerating(true)
+    try {
+      const response = await fetch("/api/generate-blueprint", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          problemStatement: formData.specificProblem,
+          context: formData.challengeArea,
+          targetAudience: "Global community",
+          constraints: `Target region: ${formData.targetRegion || "Global"}`
+        }),
+      })
+
+      const data = await response.json()
+      if (data.success) {
+        setBlueprint(data.blueprint)
+      } else {
+        alert("Failed to generate blueprint: " + data.error)
+      }
+    } catch (error) {
+      console.error("Error generating blueprint:", error)
+      alert("Failed to generate blueprint. Please try again.")
+    } finally {
+      setIsGenerating(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -131,6 +172,8 @@ export default function Home() {
                     type="text"
                     placeholder="e.g., Climate change, Education access, Healthcare equity"
                     className="w-full p-3 border border-border rounded-lg bg-background"
+                    value={formData.challengeArea}
+                    onChange={(e) => setFormData({...formData, challengeArea: e.target.value})}
                   />
                 </div>
                 
@@ -139,6 +182,8 @@ export default function Home() {
                   <textarea
                     placeholder="Describe the specific problem you want to solve..."
                     className="w-full p-3 border border-border rounded-lg bg-background h-32"
+                    value={formData.specificProblem}
+                    onChange={(e) => setFormData({...formData, specificProblem: e.target.value})}
                   />
                 </div>
                 
@@ -148,35 +193,19 @@ export default function Home() {
                     type="text"
                     placeholder="e.g., Global, Sub-Saharan Africa, Southeast Asia"
                     className="w-full p-3 border border-border rounded-lg bg-background"
+                    value={formData.targetRegion}
+                    onChange={(e) => setFormData({...formData, targetRegion: e.target.value})}
                   />
                 </div>
               </div>
               
               <Button
                 className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
-                onClick={() => setBlueprint({
-                  problemAnalysis: "AI-generated problem analysis will appear here...",
-                  solutions: [
-                    {
-                      title: "Solution 1",
-                      description: "AI-generated solution description...",
-                      impact: 85,
-                      timeline: "6 months",
-                      resources: ["Technical team", "Funding", "Partnerships"]
-                    }
-                  ],
-                  roadmap: [
-                    {
-                      phase: "Phase 1: Research & Planning",
-                      description: "Conduct market research and stakeholder analysis",
-                      duration: "2 months",
-                      tasks: "5 tasks"
-                    }
-                  ]
-                })}
+                onClick={generateBlueprint}
+                disabled={isGenerating}
               >
                 <Zap className="w-5 h-5 mr-2" />
-                Generate Blueprint
+                {isGenerating ? "Generating..." : "Generate Blueprint"}
               </Button>
             </div>
           </Card>
@@ -236,6 +265,26 @@ export default function Home() {
               </div>
             </div>
 
+            {/* SDG Alignment */}
+            {blueprint.sdg_alignment && blueprint.sdg_alignment.length > 0 && (
+              <div>
+                <h3 className="text-xl font-bold mb-4">SDG Alignment</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {blueprint.sdg_alignment.map((sdg, i) => (
+                    <Card key={i} className="p-4 bg-card/50 backdrop-blur border-border/50">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-semibold">{sdg.sdg}</h4>
+                        <div className="bg-green-500/20 text-green-400 px-2 py-1 rounded text-sm font-medium">
+                          {sdg.alignment_score}% aligned
+                        </div>
+                      </div>
+                      <p className="text-sm text-muted-foreground">{sdg.description}</p>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Implementation Roadmap */}
             <div>
               <h3 className="text-xl font-bold mb-4">Implementation Roadmap</h3>
@@ -260,6 +309,41 @@ export default function Home() {
                 </div>
               </Card>
             </div>
+
+            {/* Additional Information */}
+            {(blueprint.estimated_budget || blueprint.team_composition || blueprint.success_metrics) && (
+              <div>
+                <h3 className="text-xl font-bold mb-4">Project Details</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {blueprint.estimated_budget && (
+                    <Card className="p-4 bg-card/50 backdrop-blur border-border/50">
+                      <h4 className="font-semibold mb-2">Estimated Budget</h4>
+                      <p className="text-sm text-muted-foreground">{blueprint.estimated_budget}</p>
+                    </Card>
+                  )}
+                  {blueprint.team_composition && (
+                    <Card className="p-4 bg-card/50 backdrop-blur border-border/50">
+                      <h4 className="font-semibold mb-2">Team Composition</h4>
+                      <div className="space-y-1">
+                        {blueprint.team_composition.map((role, i) => (
+                          <div key={i} className="text-sm text-muted-foreground">• {role}</div>
+                        ))}
+                      </div>
+                    </Card>
+                  )}
+                  {blueprint.success_metrics && (
+                    <Card className="p-4 bg-card/50 backdrop-blur border-border/50">
+                      <h4 className="font-semibold mb-2">Success Metrics</h4>
+                      <div className="space-y-1">
+                        {blueprint.success_metrics.map((metric, i) => (
+                          <div key={i} className="text-sm text-muted-foreground">• {metric}</div>
+                        ))}
+                      </div>
+                    </Card>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* Call to Action */}
             <Card className="p-8 bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border-border/50">
