@@ -290,3 +290,128 @@ Return ONLY a valid JSON array of solutions, no markdown or extra text.`
 
   return await callGeminiAPI(prompt, 2048)
 }
+
+export async function generateRoadmap(
+  solution: any,
+  problemStatement: any,
+  timeline_preference: string,
+  budget_range: string,
+  team_size: string,
+  complexity_level: string,
+  stakeholder_engagement: string
+): Promise<GeminiResponse> {
+  const prompt = `You are an expert project manager and implementation consultant. Generate a comprehensive implementation roadmap for the following solution:
+
+Solution: ${JSON.stringify(solution, null, 2)}
+Problem Statement: ${JSON.stringify(problemStatement, null, 2)}
+
+Roadmap Parameters:
+- Timeline Preference: ${timeline_preference}
+- Budget Range: ${budget_range}
+- Team Size: ${team_size}
+- Complexity Level: ${complexity_level}
+- Stakeholder Engagement: ${stakeholder_engagement}
+
+Generate a detailed JSON roadmap with the following structure:
+{
+  "id": "roadmap-id",
+  "title": "Implementation Roadmap Title",
+  "description": "Comprehensive roadmap description",
+  "total_duration_months": 12,
+  "start_date": "2024-01-01",
+  "end_date": "2024-12-31",
+  "phases": [
+    {
+      "id": "phase-id",
+      "name": "Phase Name",
+      "description": "Phase description",
+      "start_date": "2024-01-01",
+      "end_date": "2024-03-31",
+      "duration_weeks": 12,
+      "status": "planning|active|completed|on_hold",
+      "milestones": [
+        {
+          "id": "milestone-id",
+          "title": "Milestone Title",
+          "description": "Milestone description",
+          "due_date": "2024-02-15",
+          "status": "not_started|in_progress|completed|blocked",
+          "priority": "low|medium|high|critical",
+          "dependencies": ["milestone-id-1"],
+          "deliverables": ["Deliverable 1", "Deliverable 2"],
+          "success_criteria": ["Criteria 1", "Criteria 2"]
+        }
+      ],
+      "budget_allocation": 50000,
+      "resource_requirements": ["Resource 1", "Resource 2"],
+      "risks": ["Risk 1", "Risk 2"],
+      "success_criteria": ["Criteria 1", "Criteria 2"]
+    }
+  ],
+  "stakeholders": [
+    {
+      "id": "stakeholder-id",
+      "name": "Stakeholder Name",
+      "role": "Role/Title",
+      "organization": "Organization",
+      "contact_info": "contact@example.com",
+      "influence_level": "low|medium|high|critical",
+      "engagement_level": "passive|supportive|active|champion",
+      "responsibilities": ["Responsibility 1", "Responsibility 2"],
+      "communication_preferences": ["Email", "Weekly meetings"]
+    }
+  ],
+  "kpis": [
+    {
+      "id": "kpi-id",
+      "name": "KPI Name",
+      "description": "KPI description",
+      "metric_type": "quantitative|qualitative",
+      "target_value": "100",
+      "current_value": "0",
+      "unit": "users|%|$",
+      "frequency": "daily|weekly|monthly|quarterly|annually",
+      "owner": "Owner Name",
+      "measurement_method": "How to measure",
+      "baseline_value": "0",
+      "target_date": "2024-06-30"
+    }
+  ],
+  "budget_breakdown": {
+    "total_budget": 200000,
+    "phases": {
+      "phase-1": 50000,
+      "phase-2": 75000,
+      "phase-3": 75000
+    },
+    "categories": {
+      "development": 100000,
+      "infrastructure": 50000,
+      "marketing": 30000,
+      "operations": 20000
+    }
+  },
+  "risk_assessment": {
+    "high_risks": ["High risk 1", "High risk 2"],
+    "medium_risks": ["Medium risk 1", "Medium risk 2"],
+    "low_risks": ["Low risk 1", "Low risk 2"],
+    "mitigation_strategies": ["Strategy 1", "Strategy 2"]
+  },
+  "success_metrics": ["Metric 1", "Metric 2", "Metric 3"]
+}
+
+Guidelines:
+- Create 3-5 implementation phases based on complexity
+- Include realistic timelines based on team size and complexity
+- Generate appropriate budget allocations based on budget range
+- Identify key stakeholders based on engagement level
+- Create measurable KPIs for each phase
+- Include comprehensive risk assessment
+- Ensure milestones have clear dependencies
+- Consider resource constraints and team capabilities
+- Align with solution requirements and problem context
+
+Return ONLY valid JSON, no markdown or extra text.`
+
+  return await callGeminiAPI(prompt, 2048)
+}

@@ -10,6 +10,7 @@ import { PitchDeckGenerator } from "@/components/pitch-deck-generator"
 import { ImpactScorecard } from "@/components/impact-scorecard"
 import { ProblemSynthesizer } from "@/components/problem-synthesizer"
 import { SolutionComposer } from "@/components/solution-composer"
+import { RoadmapBuilder } from "@/components/roadmap-builder"
 
 export default function Home() {
   const [showForm, setShowForm] = useState(false)
@@ -25,6 +26,9 @@ export default function Home() {
   const [synthesizedProblem, setSynthesizedProblem] = useState(null)
   const [showSolutionComposer, setShowSolutionComposer] = useState(false)
   const [generatedSolutions, setGeneratedSolutions] = useState(null)
+  const [showRoadmapBuilder, setShowRoadmapBuilder] = useState(false)
+  const [selectedSolution, setSelectedSolution] = useState(null)
+  const [generatedRoadmap, setGeneratedRoadmap] = useState(null)
 
   const handleProblemSynthesized = (problemStatement: any) => {
     setSynthesizedProblem(problemStatement)
@@ -35,17 +39,25 @@ export default function Home() {
 
   const handleSolutionsGenerated = (solutions: any[]) => {
     setGeneratedSolutions(solutions)
-    // Move to blueprint generation with the best solution
+    // Move to roadmap builder with the best solution
     const bestSolution = solutions.reduce((best, current) => 
       (current.feasibility_score + current.impact_potential) > (best.feasibility_score + best.impact_potential) 
         ? current : best
     )
+    setSelectedSolution(bestSolution)
+    setShowSolutionComposer(false)
+    setShowRoadmapBuilder(true)
+  }
+
+  const handleRoadmapGenerated = (roadmap: any) => {
+    setGeneratedRoadmap(roadmap)
+    // Move to blueprint generation with roadmap context
     setFormData({
       challengeArea: synthesizedProblem?.title || "Generated Challenge",
-      specificProblem: `${synthesizedProblem?.description || ""}\n\nSelected Solution: ${bestSolution.title}\n${bestSolution.description}`,
+      specificProblem: `${synthesizedProblem?.description || ""}\n\nSelected Solution: ${selectedSolution?.title}\n${selectedSolution?.description}\n\nImplementation Roadmap: ${roadmap.title}\n${roadmap.description}`,
       targetRegion: synthesizedProblem?.scope || "Global"
     })
-    setShowSolutionComposer(false)
+    setShowRoadmapBuilder(false)
     setShowForm(true)
   }
 
@@ -518,6 +530,29 @@ export default function Home() {
           <SolutionComposer 
             problemStatement={synthesizedProblem}
             onSolutionsGenerated={handleSolutionsGenerated}
+          />
+        </div>
+      )}
+
+      {/* Roadmap Builder */}
+      {showRoadmapBuilder && selectedSolution && synthesizedProblem && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-6">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setShowRoadmapBuilder(false)
+                setShowSolutionComposer(true)
+              }}
+              className="mb-4"
+            >
+              ← Back to Solution Composer
+            </Button>
+          </div>
+          <RoadmapBuilder 
+            solution={selectedSolution}
+            problemStatement={synthesizedProblem}
+            onRoadmapGenerated={handleRoadmapGenerated}
           />
         </div>
       )}
