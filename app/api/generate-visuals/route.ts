@@ -1,5 +1,3 @@
-import { generateText } from "ai"
-
 export async function POST(request: Request) {
   try {
     const { blueprint, types } = await request.json()
@@ -10,9 +8,7 @@ export async function POST(request: Request) {
       let visual = null
 
       if (type === "architecture") {
-        const { text: mermaidCode } = await generateText({
-          model: "openai/gpt-4-turbo",
-          prompt: `Generate a Mermaid diagram for the system architecture of this solution:
+        const prompt = `Generate a Mermaid diagram for the system architecture of this solution:
 
 ${JSON.stringify(blueprint, null, 2)}
 
@@ -22,8 +18,34 @@ Create a system architecture diagram showing:
 - External integrations
 - User interfaces
 
-Return ONLY the Mermaid diagram code, no explanations.`,
+Return ONLY the Mermaid diagram code, no explanations.`
+
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{
+                text: prompt
+              }]
+            }],
+            generationConfig: {
+              temperature: 0.7,
+              topK: 40,
+              topP: 0.95,
+              maxOutputTokens: 1024,
+            }
+          })
         })
+
+        if (!response.ok) {
+          throw new Error(`Gemini API error: ${response.status}`)
+        }
+
+        const data = await response.json()
+        const mermaidCode = data.candidates[0].content.parts[0].text
 
         visual = {
           type: "architecture",
@@ -32,9 +54,7 @@ Return ONLY the Mermaid diagram code, no explanations.`,
           mermaidCode: mermaidCode,
         }
       } else if (type === "user-flow") {
-        const { text: mermaidCode } = await generateText({
-          model: "openai/gpt-4-turbo",
-          prompt: `Generate a Mermaid flowchart for the user journey of this solution:
+        const prompt = `Generate a Mermaid flowchart for the user journey of this solution:
 
 ${JSON.stringify(blueprint, null, 2)}
 
@@ -44,8 +64,34 @@ Create a user flow diagram showing:
 - User touchpoints with the system
 - Success and error paths
 
-Return ONLY the Mermaid flowchart code, no explanations.`,
+Return ONLY the Mermaid flowchart code, no explanations.`
+
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{
+                text: prompt
+              }]
+            }],
+            generationConfig: {
+              temperature: 0.7,
+              topK: 40,
+              topP: 0.95,
+              maxOutputTokens: 1024,
+            }
+          })
         })
+
+        if (!response.ok) {
+          throw new Error(`Gemini API error: ${response.status}`)
+        }
+
+        const data = await response.json()
+        const mermaidCode = data.candidates[0].content.parts[0].text
 
         visual = {
           type: "user-flow",
@@ -54,9 +100,7 @@ Return ONLY the Mermaid flowchart code, no explanations.`,
           mermaidCode: mermaidCode,
         }
       } else if (type === "wireframe") {
-        const { text: wireframeDescription } = await generateText({
-          model: "openai/gpt-4-turbo",
-          prompt: `Generate a detailed wireframe description for the UI of this solution:
+        const prompt = `Generate a detailed wireframe description for the UI of this solution:
 
 ${JSON.stringify(blueprint, null, 2)}
 
@@ -66,8 +110,34 @@ Describe the key screens and interface elements:
 - Navigation structure
 - Important UI components
 
-Return a structured description of the wireframes.`,
+Return a structured description of the wireframes.`
+
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro:generateContent?key=${process.env.GEMINI_API_KEY}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            contents: [{
+              parts: [{
+                text: prompt
+              }]
+            }],
+            generationConfig: {
+              temperature: 0.7,
+              topK: 40,
+              topP: 0.95,
+              maxOutputTokens: 1024,
+            }
+          })
         })
+
+        if (!response.ok) {
+          throw new Error(`Gemini API error: ${response.status}`)
+        }
+
+        const data = await response.json()
+        const wireframeDescription = data.candidates[0].content.parts[0].text
 
         visual = {
           type: "wireframe",

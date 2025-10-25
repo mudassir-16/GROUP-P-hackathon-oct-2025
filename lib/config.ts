@@ -1,11 +1,13 @@
 // API Configuration for OpenIdeaX
 export const API_CONFIG = {
-  // OpenAI Configuration
-  OPENAI: {
-    API_KEY: process.env.OPENAI_API_KEY || '',
-    MODEL: process.env.OPENAI_MODEL || 'gpt-4-turbo',
-    MAX_TOKENS: 4000,
+  // Gemini Configuration
+  GEMINI: {
+    API_KEY: process.env.GEMINI_API_KEY || '',
+    MODEL: 'gemini-1.5-pro',
+    MAX_TOKENS: 2048,
     TEMPERATURE: 0.7,
+    TOP_K: 40,
+    TOP_P: 0.95,
   },
 
   // SDG API Configuration
