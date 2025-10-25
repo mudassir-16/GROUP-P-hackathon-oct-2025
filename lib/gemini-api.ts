@@ -48,754 +48,148 @@ export async function callGeminiAPI(prompt: string, maxTokens: number = 2048): P
   }
 }
 
-export async function generateProblemStatement(challenge: string, context: string, targetRegion: string): Promise<GeminiResponse> {
-  const prompt = `You are an expert problem analyst and innovation consultant. Analyze the following challenge and synthesize it into a concrete, actionable problem statement.
+export async function generateProblemStatement(challenge: string, context?: string, targetRegion?: string): Promise<GeminiResponse> {
+  const prompt = `You are an expert problem analyst and innovation consultant. Analyze the following challenge and create a comprehensive problem statement.
 
 Challenge: ${challenge}
-Context: ${context || "No additional context provided"}
-Target Region: ${targetRegion || "Global"}
+${context ? `Context: ${context}` : ''}
+${targetRegion ? `Target Region: ${targetRegion}` : ''}
 
-Provide a detailed JSON response with the following structure:
+Generate a detailed JSON problem statement with the following structure:
 {
-  "id": "unique-id",
   "title": "Clear, concise problem title",
-  "description": "Detailed problem description with specific details",
-  "scope": "Geographic and demographic scope of the problem",
-  "stakeholders": ["List of key stakeholders affected by this problem"],
-  "impact_metrics": ["Specific metrics to measure problem impact"],
-  "urgency_level": "low|medium|high|critical",
-  "complexity_score": 85,
-  "feasibility_score": 75,
-  "sdg_alignment": ["Relevant SDG goals this problem addresses"],
-  "root_causes": ["Primary root causes of the problem"],
-  "success_criteria": ["Clear criteria for successful problem resolution"],
-  "constraints": ["Key constraints and limitations"],
-  "opportunities": ["Potential opportunities for innovation"]
+  "description": "Detailed problem description with context and scope",
+  "scope": "Geographic or demographic scope",
+  "severity": "low|medium|high|critical",
+  "affected_population": "Number or description of affected people",
+  "root_causes": ["cause1", "cause2", "cause3"],
+  "current_solutions": ["existing solution 1", "existing solution 2"],
+  "gaps": ["gap1", "gap2"],
+  "stakeholders": ["stakeholder1", "stakeholder2"],
+  "constraints": ["constraint1", "constraint2"],
+  "success_metrics": ["metric1", "metric2"],
+  "urgency": "low|medium|high|critical",
+  "complexity": "simple|moderate|complex",
+  "data_availability": "low|medium|high",
+  "regulatory_environment": "description of relevant regulations",
+  "economic_impact": "description of economic implications",
+  "social_impact": "description of social implications",
+  "environmental_impact": "description of environmental implications"
 }
 
 Guidelines:
-- Make the problem statement specific and measurable
-- Include quantifiable impact metrics where possible
-- Identify clear stakeholders and their roles
-- Assess urgency based on current impact and trends
-- Calculate complexity score (0-100) based on technical, social, and economic factors
-- Calculate feasibility score (0-100) based on available resources and solutions
-- Align with relevant UN Sustainable Development Goals
-- Identify root causes, not just symptoms
-- Define clear success criteria
-- Consider both constraints and opportunities
+- Be specific and actionable
+- Include quantitative data where possible
+- Consider multiple perspectives and stakeholders
+- Identify clear gaps in current solutions
+- Provide measurable success metrics
+- Consider implementation constraints
+- Assess urgency and complexity realistically
 
 Return ONLY valid JSON, no markdown or extra text.`
 
-  return await callGeminiAPI(prompt, 2048)
-}
-
-export async function generateEthicalImpactSummary(
-  blueprint: any,
-  solution?: any,
-  problemStatement?: any
-): Promise<GeminiResponse> {
-  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
-
-Blueprint: ${JSON.stringify(blueprint, null, 2)}
-${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
-${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
-
-Generate a detailed JSON ethical impact summary with the following structure:
-{
-  "overall_score": 75,
-  "bias_detection": [
-    {
-      "type": "demographic|cultural|geographic|economic|technological|gender|age",
-      "severity": "low|medium|high|critical",
-      "description": "Detailed description of the bias",
-      "affected_groups": ["group1", "group2"],
-      "mitigation_strategies": ["strategy1", "strategy2"],
-      "confidence_score": 85
-    }
-  ],
-  "ethical_concerns": [
-    {
-      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
-      "severity": "low|medium|high|critical",
-      "description": "Description of the ethical concern",
-      "impact_assessment": "Detailed impact assessment",
-      "recommended_actions": ["action1", "action2"],
-      "compliance_requirements": ["requirement1", "requirement2"],
-      "risk_level": 70
-    }
-  ],
-  "impact_analysis": {
-    "positive_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "negative_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "unintended_consequences": ["consequence1", "consequence2"],
-    "long_term_effects": ["effect1", "effect2"],
-    "stakeholder_impacts": {
-      "users": {
-        "positive": ["positive1"],
-        "negative": ["negative1"],
-        "neutral": ["neutral1"]
-      }
-    }
-  },
-  "compliance_checks": [
-    {
-      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
-      "status": "compliant|partial|non_compliant|not_applicable",
-      "requirements": ["req1", "req2"],
-      "gaps": ["gap1", "gap2"],
-      "recommendations": ["rec1", "rec2"],
-      "priority": "low|medium|high|critical"
-    }
-  ],
-  "recommendations": ["recommendation1", "recommendation2"],
-  "risk_assessment": {
-    "overall_risk": "low|medium|high|critical",
-    "risk_factors": ["factor1", "factor2"],
-    "mitigation_plan": ["plan1", "plan2"]
-  },
-  "transparency_report": {
-    "data_sources": ["source1", "source2"],
-    "methodology": ["method1", "method2"],
-    "limitations": ["limitation1", "limitation2"],
-    "assumptions": ["assumption1", "assumption2"]
-  },
-  "last_updated": "2024-01-01"
-}
-
-Guidelines:
-- Conduct comprehensive bias detection across all relevant dimensions
-- Identify ethical concerns across privacy, fairness, transparency, and safety
-- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
-- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
-- Provide actionable recommendations for ethical implementation
-- Assess overall risk level and create mitigation plans
-- Ensure transparency in methodology and data sources
-- Consider unintended consequences and long-term effects
-- Evaluate stakeholder impacts comprehensively
-- Provide specific, actionable recommendations
-
-Return ONLY valid JSON, no markdown or extra text.`
-
-  return await callGeminiAPI(prompt, 2048)
-}
-
-export async function generateKnowledgeGraph(
-  searchQuery: string,
-  category: string,
-  sdgFilter: number | null
-): Promise<GeminiResponse> {
-  const prompt = `You are an expert in global development and knowledge management. Generate a comprehensive knowledge graph that connects global problems, existing solutions, and SDG goals.
-
-Search Parameters:
-- Query: ${searchQuery || "Global challenges and solutions"}
-- Category: ${category}
-- SDG Filter: ${sdgFilter ? `SDG ${sdgFilter}` : "All SDGs"}
-
-Generate a detailed JSON knowledge graph with the following structure:
-{
-  "problems": [
-    {
-      "id": "problem-id",
-      "title": "Problem Title",
-      "description": "Detailed problem description",
-      "category": "climate|health|education|poverty|inequality|technology|environment|governance|infrastructure",
-      "severity": "low|medium|high|critical",
-      "affected_population": 1000000,
-      "geographic_scope": ["region1", "region2"],
-      "sdg_goals": [1, 2, 3],
-      "related_problems": ["problem-id-1", "problem-id-2"],
-      "existing_solutions": ["solution-id-1", "solution-id-2"],
-      "data_sources": ["source1", "source2"],
-      "last_updated": "2024-01-01"
-    }
-  ],
-  "solutions": [
-    {
-      "id": "solution-id",
-      "title": "Solution Title",
-      "description": "Detailed solution description",
-      "type": "technology|policy|social|economic",
-      "effectiveness_score": 85,
-      "implementation_status": "concept|pilot|scaled|mature",
-      "target_problems": ["problem-id-1", "problem-id-2"],
-      "sdg_goals": [1, 2, 3],
-      "stakeholders": ["stakeholder1", "stakeholder2"],
-      "geographic_reach": ["region1", "region2"],
-      "funding_sources": ["source1", "source2"],
-      "success_metrics": ["metric1", "metric2"],
-      "challenges": ["challenge1", "challenge2"],
-      "scalability_potential": 80,
-      "cost_effectiveness": 75,
-      "last_updated": "2024-01-01"
-    }
-  ],
-  "sdgs": [
-    {
-      "id": 1,
-      "title": "No Poverty",
-      "description": "End poverty in all its forms everywhere",
-      "targets": ["target1", "target2"],
-      "indicators": ["indicator1", "indicator2"],
-      "related_problems": ["problem-id-1", "problem-id-2"],
-      "related_solutions": ["solution-id-1", "solution-id-2"],
-      "progress_status": "on_track|challenging|off_track",
-      "priority_areas": ["area1", "area2"],
-      "funding_requirements": 1000000,
-      "timeline": "2030"
-    }
-  ],
-  "connections": [
-    {
-      "from": "problem-id",
-      "to": "solution-id",
-      "type": "addresses|supports|conflicts|enables|requires",
-      "strength": 0.8,
-      "description": "Connection description"
-    }
-  ],
-  "last_updated": "2024-01-01",
-  "total_nodes": 50,
-  "total_connections": 100
-}
-
-Guidelines:
-- Generate 10-15 global problems across different categories
-- Include 15-20 existing solutions with diverse types and effectiveness scores
-- Connect problems to relevant SDG goals (1-17)
-- Create meaningful connections between problems and solutions
-- Include realistic data about affected populations and geographic scope
-- Ensure solutions address the problems they target
-- Include both successful and emerging solutions
-- Consider global, regional, and local perspectives
-- Include diverse stakeholders and funding sources
-- Provide realistic timelines and progress status
-- Focus on ${category === "all" ? "diverse global challenges" : `${category} challenges`}
-- ${sdgFilter ? `Prioritize solutions and problems related to SDG ${sdgFilter}` : "Include all SDG goals"}
-
-Return ONLY valid JSON, no markdown or extra text.`
-
-  return await callGeminiAPI(prompt, 2048)
-}
-
-export async function generateEthicalImpactSummary(
-  blueprint: any,
-  solution?: any,
-  problemStatement?: any
-): Promise<GeminiResponse> {
-  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
-
-Blueprint: ${JSON.stringify(blueprint, null, 2)}
-${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
-${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
-
-Generate a detailed JSON ethical impact summary with the following structure:
-{
-  "overall_score": 75,
-  "bias_detection": [
-    {
-      "type": "demographic|cultural|geographic|economic|technological|gender|age",
-      "severity": "low|medium|high|critical",
-      "description": "Detailed description of the bias",
-      "affected_groups": ["group1", "group2"],
-      "mitigation_strategies": ["strategy1", "strategy2"],
-      "confidence_score": 85
-    }
-  ],
-  "ethical_concerns": [
-    {
-      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
-      "severity": "low|medium|high|critical",
-      "description": "Description of the ethical concern",
-      "impact_assessment": "Detailed impact assessment",
-      "recommended_actions": ["action1", "action2"],
-      "compliance_requirements": ["requirement1", "requirement2"],
-      "risk_level": 70
-    }
-  ],
-  "impact_analysis": {
-    "positive_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "negative_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "unintended_consequences": ["consequence1", "consequence2"],
-    "long_term_effects": ["effect1", "effect2"],
-    "stakeholder_impacts": {
-      "users": {
-        "positive": ["positive1"],
-        "negative": ["negative1"],
-        "neutral": ["neutral1"]
-      }
-    }
-  },
-  "compliance_checks": [
-    {
-      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
-      "status": "compliant|partial|non_compliant|not_applicable",
-      "requirements": ["req1", "req2"],
-      "gaps": ["gap1", "gap2"],
-      "recommendations": ["rec1", "rec2"],
-      "priority": "low|medium|high|critical"
-    }
-  ],
-  "recommendations": ["recommendation1", "recommendation2"],
-  "risk_assessment": {
-    "overall_risk": "low|medium|high|critical",
-    "risk_factors": ["factor1", "factor2"],
-    "mitigation_plan": ["plan1", "plan2"]
-  },
-  "transparency_report": {
-    "data_sources": ["source1", "source2"],
-    "methodology": ["method1", "method2"],
-    "limitations": ["limitation1", "limitation2"],
-    "assumptions": ["assumption1", "assumption2"]
-  },
-  "last_updated": "2024-01-01"
-}
-
-Guidelines:
-- Conduct comprehensive bias detection across all relevant dimensions
-- Identify ethical concerns across privacy, fairness, transparency, and safety
-- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
-- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
-- Provide actionable recommendations for ethical implementation
-- Assess overall risk level and create mitigation plans
-- Ensure transparency in methodology and data sources
-- Consider unintended consequences and long-term effects
-- Evaluate stakeholder impacts comprehensively
-- Provide specific, actionable recommendations
-
-Return ONLY valid JSON, no markdown or extra text.`
-
-  return await callGeminiAPI(prompt, 2048)
+  return await callGeminiAPI(prompt, 1024)
 }
 
 export async function generateBlueprint(problemStatement: string, context: string, targetAudience: string, constraints: string): Promise<GeminiResponse> {
-  const prompt = `You are an expert innovation consultant. Generate a comprehensive innovation blueprint for the following challenge:
+  const prompt = `You are an expert innovation consultant and solution architect. Create a comprehensive implementation blueprint for the following problem.
 
 Problem Statement: ${problemStatement}
 Context: ${context}
 Target Audience: ${targetAudience}
 Constraints: ${constraints}
 
-Provide a detailed JSON response with the following structure:
+Generate a detailed JSON blueprint with the following structure:
 {
-  "problemAnalysis": "Deep analysis of the problem",
+  "title": "Blueprint title",
+  "description": "Comprehensive blueprint description",
+  "problemAnalysis": "Detailed analysis of the problem",
   "solutions": [
     {
       "title": "Solution title",
-      "description": "Detailed description",
+      "description": "Solution description",
       "impact": 85,
-      "timeline": "6 months",
-      "resources": ["Resource 1", "Resource 2"],
-      "implementation_steps": ["Step 1", "Step 2"]
+      "timeline": "6-12 months",
+      "resources": ["resource1", "resource2", "resource3"]
     }
   ],
   "roadmap": [
     {
-      "phase": "Phase name",
-      "duration": "Duration",
-      "tasks": 5,
-      "description": "Phase description"
+      "phase": "Phase 1: Foundation",
+      "description": "Phase description",
+      "duration": "3 months",
+      "tasks": "Key tasks and deliverables"
     }
   ],
   "sdg_alignment": [
     {
-      "sdg": "SDG number and name",
-      "alignment_score": 85,
-      "description": "How this blueprint aligns with this SDG"
+      "sdg": "SDG 1: No Poverty",
+      "description": "How this solution aligns with SDG 1",
+      "alignment_score": 85
     }
   ],
-  "risks": ["Risk 1", "Risk 2"],
-  "success_metrics": ["Metric 1", "Metric 2"],
-  "estimated_budget": "Budget range",
-  "team_composition": ["Role 1", "Role 2"]
+  "estimated_budget": "Budget estimate",
+  "team_composition": ["role1", "role2", "role3"],
+  "success_metrics": ["metric1", "metric2", "metric3"],
+  "risks": ["risk1", "risk2"],
+  "mitigation_strategies": ["strategy1", "strategy2"],
+  "stakeholders": ["stakeholder1", "stakeholder2"],
+  "implementation_approach": "Detailed implementation strategy",
+  "scalability": "Scalability considerations",
+  "sustainability": "Sustainability aspects",
+  "innovation_level": "incremental|moderate|breakthrough",
+  "feasibility_score": 80,
+  "impact_potential": 90
 }
+
+Guidelines:
+- Create actionable, implementable solutions
+- Include realistic timelines and resource requirements
+- Align with relevant SDG goals
+- Consider scalability and sustainability
+- Provide clear success metrics
+- Identify and address risks
+- Ensure solutions are feasible and impactful
+- Consider the target audience and constraints
 
 Return ONLY valid JSON, no markdown or extra text.`
 
   return await callGeminiAPI(prompt, 2048)
 }
 
-export async function generateEthicalImpactSummary(
-  blueprint: any,
-  solution?: any,
-  problemStatement?: any
-): Promise<GeminiResponse> {
-  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
+export async function generateVisuals(blueprint: any, types: string[]): Promise<GeminiResponse> {
+  const prompt = `You are an expert visual designer and system architect. Generate visual representations for the following innovation blueprint.
 
 Blueprint: ${JSON.stringify(blueprint, null, 2)}
-${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
-${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
+Visual Types Requested: ${types.join(', ')}
 
-Generate a detailed JSON ethical impact summary with the following structure:
-{
-  "overall_score": 75,
-  "bias_detection": [
-    {
-      "type": "demographic|cultural|geographic|economic|technological|gender|age",
-      "severity": "low|medium|high|critical",
-      "description": "Detailed description of the bias",
-      "affected_groups": ["group1", "group2"],
-      "mitigation_strategies": ["strategy1", "strategy2"],
-      "confidence_score": 85
-    }
-  ],
-  "ethical_concerns": [
-    {
-      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
-      "severity": "low|medium|high|critical",
-      "description": "Description of the ethical concern",
-      "impact_assessment": "Detailed impact assessment",
-      "recommended_actions": ["action1", "action2"],
-      "compliance_requirements": ["requirement1", "requirement2"],
-      "risk_level": 70
-    }
-  ],
-  "impact_analysis": {
-    "positive_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "negative_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "unintended_consequences": ["consequence1", "consequence2"],
-    "long_term_effects": ["effect1", "effect2"],
-    "stakeholder_impacts": {
-      "users": {
-        "positive": ["positive1"],
-        "negative": ["negative1"],
-        "neutral": ["neutral1"]
-      }
-    }
-  },
-  "compliance_checks": [
-    {
-      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
-      "status": "compliant|partial|non_compliant|not_applicable",
-      "requirements": ["req1", "req2"],
-      "gaps": ["gap1", "gap2"],
-      "recommendations": ["rec1", "rec2"],
-      "priority": "low|medium|high|critical"
-    }
-  ],
-  "recommendations": ["recommendation1", "recommendation2"],
-  "risk_assessment": {
-    "overall_risk": "low|medium|high|critical",
-    "risk_factors": ["factor1", "factor2"],
-    "mitigation_plan": ["plan1", "plan2"]
-  },
-  "transparency_report": {
-    "data_sources": ["source1", "source2"],
-    "methodology": ["method1", "method2"],
-    "limitations": ["limitation1", "limitation2"],
-    "assumptions": ["assumption1", "assumption2"]
-  },
-  "last_updated": "2024-01-01"
-}
+Generate visual content based on the requested types. For each type, provide appropriate content:
 
-Guidelines:
-- Conduct comprehensive bias detection across all relevant dimensions
-- Identify ethical concerns across privacy, fairness, transparency, and safety
-- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
-- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
-- Provide actionable recommendations for ethical implementation
-- Assess overall risk level and create mitigation plans
-- Ensure transparency in methodology and data sources
-- Consider unintended consequences and long-term effects
-- Evaluate stakeholder impacts comprehensively
-- Provide specific, actionable recommendations
+For "architecture": Generate a Mermaid diagram showing system architecture
+For "user-flow": Generate a Mermaid flowchart showing user journey
+For "wireframe": Provide detailed wireframe descriptions
+For "concept-art": Provide concept art descriptions
 
-Return ONLY valid JSON, no markdown or extra text.`
-
-  return await callGeminiAPI(prompt, 2048)
-}
-
-export async function generateKnowledgeGraph(
-  searchQuery: string,
-  category: string,
-  sdgFilter: number | null
-): Promise<GeminiResponse> {
-  const prompt = `You are an expert in global development and knowledge management. Generate a comprehensive knowledge graph that connects global problems, existing solutions, and SDG goals.
-
-Search Parameters:
-- Query: ${searchQuery || "Global challenges and solutions"}
-- Category: ${category}
-- SDG Filter: ${sdgFilter ? `SDG ${sdgFilter}` : "All SDGs"}
-
-Generate a detailed JSON knowledge graph with the following structure:
-{
-  "problems": [
-    {
-      "id": "problem-id",
-      "title": "Problem Title",
-      "description": "Detailed problem description",
-      "category": "climate|health|education|poverty|inequality|technology|environment|governance|infrastructure",
-      "severity": "low|medium|high|critical",
-      "affected_population": 1000000,
-      "geographic_scope": ["region1", "region2"],
-      "sdg_goals": [1, 2, 3],
-      "related_problems": ["problem-id-1", "problem-id-2"],
-      "existing_solutions": ["solution-id-1", "solution-id-2"],
-      "data_sources": ["source1", "source2"],
-      "last_updated": "2024-01-01"
-    }
-  ],
-  "solutions": [
-    {
-      "id": "solution-id",
-      "title": "Solution Title",
-      "description": "Detailed solution description",
-      "type": "technology|policy|social|economic",
-      "effectiveness_score": 85,
-      "implementation_status": "concept|pilot|scaled|mature",
-      "target_problems": ["problem-id-1", "problem-id-2"],
-      "sdg_goals": [1, 2, 3],
-      "stakeholders": ["stakeholder1", "stakeholder2"],
-      "geographic_reach": ["region1", "region2"],
-      "funding_sources": ["source1", "source2"],
-      "success_metrics": ["metric1", "metric2"],
-      "challenges": ["challenge1", "challenge2"],
-      "scalability_potential": 80,
-      "cost_effectiveness": 75,
-      "last_updated": "2024-01-01"
-    }
-  ],
-  "sdgs": [
-    {
-      "id": 1,
-      "title": "No Poverty",
-      "description": "End poverty in all its forms everywhere",
-      "targets": ["target1", "target2"],
-      "indicators": ["indicator1", "indicator2"],
-      "related_problems": ["problem-id-1", "problem-id-2"],
-      "related_solutions": ["solution-id-1", "solution-id-2"],
-      "progress_status": "on_track|challenging|off_track",
-      "priority_areas": ["area1", "area2"],
-      "funding_requirements": 1000000,
-      "timeline": "2030"
-    }
-  ],
-  "connections": [
-    {
-      "from": "problem-id",
-      "to": "solution-id",
-      "type": "addresses|supports|conflicts|enables|requires",
-      "strength": 0.8,
-      "description": "Connection description"
-    }
-  ],
-  "last_updated": "2024-01-01",
-  "total_nodes": 50,
-  "total_connections": 100
-}
-
-Guidelines:
-- Generate 10-15 global problems across different categories
-- Include 15-20 existing solutions with diverse types and effectiveness scores
-- Connect problems to relevant SDG goals (1-17)
-- Create meaningful connections between problems and solutions
-- Include realistic data about affected populations and geographic scope
-- Ensure solutions address the problems they target
-- Include both successful and emerging solutions
-- Consider global, regional, and local perspectives
-- Include diverse stakeholders and funding sources
-- Provide realistic timelines and progress status
-- Focus on ${category === "all" ? "diverse global challenges" : `${category} challenges`}
-- ${sdgFilter ? `Prioritize solutions and problems related to SDG ${sdgFilter}` : "Include all SDG goals"}
-
-Return ONLY valid JSON, no markdown or extra text.`
-
-  return await callGeminiAPI(prompt, 2048)
-}
-
-export async function generateEthicalImpactSummary(
-  blueprint: any,
-  solution?: any,
-  problemStatement?: any
-): Promise<GeminiResponse> {
-  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
-
-Blueprint: ${JSON.stringify(blueprint, null, 2)}
-${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
-${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
-
-Generate a detailed JSON ethical impact summary with the following structure:
-{
-  "overall_score": 75,
-  "bias_detection": [
-    {
-      "type": "demographic|cultural|geographic|economic|technological|gender|age",
-      "severity": "low|medium|high|critical",
-      "description": "Detailed description of the bias",
-      "affected_groups": ["group1", "group2"],
-      "mitigation_strategies": ["strategy1", "strategy2"],
-      "confidence_score": 85
-    }
-  ],
-  "ethical_concerns": [
-    {
-      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
-      "severity": "low|medium|high|critical",
-      "description": "Description of the ethical concern",
-      "impact_assessment": "Detailed impact assessment",
-      "recommended_actions": ["action1", "action2"],
-      "compliance_requirements": ["requirement1", "requirement2"],
-      "risk_level": 70
-    }
-  ],
-  "impact_analysis": {
-    "positive_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "negative_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "unintended_consequences": ["consequence1", "consequence2"],
-    "long_term_effects": ["effect1", "effect2"],
-    "stakeholder_impacts": {
-      "users": {
-        "positive": ["positive1"],
-        "negative": ["negative1"],
-        "neutral": ["neutral1"]
-      }
-    }
-  },
-  "compliance_checks": [
-    {
-      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
-      "status": "compliant|partial|non_compliant|not_applicable",
-      "requirements": ["req1", "req2"],
-      "gaps": ["gap1", "gap2"],
-      "recommendations": ["rec1", "rec2"],
-      "priority": "low|medium|high|critical"
-    }
-  ],
-  "recommendations": ["recommendation1", "recommendation2"],
-  "risk_assessment": {
-    "overall_risk": "low|medium|high|critical",
-    "risk_factors": ["factor1", "factor2"],
-    "mitigation_plan": ["plan1", "plan2"]
-  },
-  "transparency_report": {
-    "data_sources": ["source1", "source2"],
-    "methodology": ["method1", "method2"],
-    "limitations": ["limitation1", "limitation2"],
-    "assumptions": ["assumption1", "assumption2"]
-  },
-  "last_updated": "2024-01-01"
-}
-
-Guidelines:
-- Conduct comprehensive bias detection across all relevant dimensions
-- Identify ethical concerns across privacy, fairness, transparency, and safety
-- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
-- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
-- Provide actionable recommendations for ethical implementation
-- Assess overall risk level and create mitigation plans
-- Ensure transparency in methodology and data sources
-- Consider unintended consequences and long-term effects
-- Evaluate stakeholder impacts comprehensively
-- Provide specific, actionable recommendations
-
-Return ONLY valid JSON, no markdown or extra text.`
-
-  return await callGeminiAPI(prompt, 2048)
-}
-
-export async function generateVisualPrototype(blueprint: any, type: string): Promise<GeminiResponse> {
-  let prompt = ''
-
-  switch (type) {
-    case 'architecture':
-      prompt = `Generate a Mermaid diagram for the system architecture of this solution:
-
-${JSON.stringify(blueprint, null, 2)}
-
-Create a system architecture diagram showing:
-- Main components and services
-- Data flow between components
-- External integrations
-- User interfaces
-
-Return ONLY the Mermaid diagram code, no explanations.`
-      break
-
-    case 'user-flow':
-      prompt = `Generate a Mermaid flowchart for the user journey of this solution:
-
-${JSON.stringify(blueprint, null, 2)}
-
-Create a user flow diagram showing:
-- User entry points
-- Key interactions and decisions
-- User touchpoints with the system
-- Success and error paths
-
-Return ONLY the Mermaid flowchart code, no explanations.`
-      break
-
-    case 'wireframe':
-      prompt = `Generate a detailed wireframe description for the UI of this solution:
-
-${JSON.stringify(blueprint, null, 2)}
-
-Describe the key screens and interface elements:
-- Main dashboard/landing page
-- Key user interaction screens
-- Navigation structure
-- Important UI components
-
-Return a structured description of the wireframes.`
-      break
-
-    case 'concept-art':
-      prompt = `Generate a detailed concept visualization description for this solution:
-
-${JSON.stringify(blueprint, null, 2)}
-
-Describe the visual concept including:
-- Brand identity and visual style
-- Color scheme and typography
-- Key visual elements and imagery
-- User interface aesthetics
-
-Return a detailed description of the concept visualization.`
-      break
-
-    default:
-      throw new Error(`Unknown visual type: ${type}`)
+Return a JSON array with visual objects:
+[
+  {
+    "type": "architecture|user-flow|wireframe|concept-art",
+    "title": "Visual title",
+    "description": "Visual description",
+    "mermaidCode": "mermaid diagram code (for architecture/user-flow)",
+    "wireframeDescription": "wireframe description (for wireframe)",
+    "imageUrl": "placeholder URL (for concept-art)"
   }
+]
+
+Guidelines:
+- Create clear, professional visual representations
+- Use appropriate Mermaid syntax for diagrams
+- Provide detailed descriptions for wireframes
+- Ensure visuals align with the blueprint content
+- Make diagrams readable and well-structured
+
+Return ONLY valid JSON, no markdown or extra text.`
 
   return await callGeminiAPI(prompt, 1024)
 }
@@ -819,304 +213,6 @@ For each slide, provide:
 - type: "title" | "problem" | "solution" | "impact" | "roadmap"
 
 Return ONLY a valid JSON array of slides, no markdown or extra text.`
-
-  return await callGeminiAPI(prompt, 2048)
-}
-
-export async function generateEthicalImpactSummary(
-  blueprint: any,
-  solution?: any,
-  problemStatement?: any
-): Promise<GeminiResponse> {
-  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
-
-Blueprint: ${JSON.stringify(blueprint, null, 2)}
-${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
-${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
-
-Generate a detailed JSON ethical impact summary with the following structure:
-{
-  "overall_score": 75,
-  "bias_detection": [
-    {
-      "type": "demographic|cultural|geographic|economic|technological|gender|age",
-      "severity": "low|medium|high|critical",
-      "description": "Detailed description of the bias",
-      "affected_groups": ["group1", "group2"],
-      "mitigation_strategies": ["strategy1", "strategy2"],
-      "confidence_score": 85
-    }
-  ],
-  "ethical_concerns": [
-    {
-      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
-      "severity": "low|medium|high|critical",
-      "description": "Description of the ethical concern",
-      "impact_assessment": "Detailed impact assessment",
-      "recommended_actions": ["action1", "action2"],
-      "compliance_requirements": ["requirement1", "requirement2"],
-      "risk_level": 70
-    }
-  ],
-  "impact_analysis": {
-    "positive_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "negative_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "unintended_consequences": ["consequence1", "consequence2"],
-    "long_term_effects": ["effect1", "effect2"],
-    "stakeholder_impacts": {
-      "users": {
-        "positive": ["positive1"],
-        "negative": ["negative1"],
-        "neutral": ["neutral1"]
-      }
-    }
-  },
-  "compliance_checks": [
-    {
-      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
-      "status": "compliant|partial|non_compliant|not_applicable",
-      "requirements": ["req1", "req2"],
-      "gaps": ["gap1", "gap2"],
-      "recommendations": ["rec1", "rec2"],
-      "priority": "low|medium|high|critical"
-    }
-  ],
-  "recommendations": ["recommendation1", "recommendation2"],
-  "risk_assessment": {
-    "overall_risk": "low|medium|high|critical",
-    "risk_factors": ["factor1", "factor2"],
-    "mitigation_plan": ["plan1", "plan2"]
-  },
-  "transparency_report": {
-    "data_sources": ["source1", "source2"],
-    "methodology": ["method1", "method2"],
-    "limitations": ["limitation1", "limitation2"],
-    "assumptions": ["assumption1", "assumption2"]
-  },
-  "last_updated": "2024-01-01"
-}
-
-Guidelines:
-- Conduct comprehensive bias detection across all relevant dimensions
-- Identify ethical concerns across privacy, fairness, transparency, and safety
-- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
-- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
-- Provide actionable recommendations for ethical implementation
-- Assess overall risk level and create mitigation plans
-- Ensure transparency in methodology and data sources
-- Consider unintended consequences and long-term effects
-- Evaluate stakeholder impacts comprehensively
-- Provide specific, actionable recommendations
-
-Return ONLY valid JSON, no markdown or extra text.`
-
-  return await callGeminiAPI(prompt, 2048)
-}
-
-export async function generateKnowledgeGraph(
-  searchQuery: string,
-  category: string,
-  sdgFilter: number | null
-): Promise<GeminiResponse> {
-  const prompt = `You are an expert in global development and knowledge management. Generate a comprehensive knowledge graph that connects global problems, existing solutions, and SDG goals.
-
-Search Parameters:
-- Query: ${searchQuery || "Global challenges and solutions"}
-- Category: ${category}
-- SDG Filter: ${sdgFilter ? `SDG ${sdgFilter}` : "All SDGs"}
-
-Generate a detailed JSON knowledge graph with the following structure:
-{
-  "problems": [
-    {
-      "id": "problem-id",
-      "title": "Problem Title",
-      "description": "Detailed problem description",
-      "category": "climate|health|education|poverty|inequality|technology|environment|governance|infrastructure",
-      "severity": "low|medium|high|critical",
-      "affected_population": 1000000,
-      "geographic_scope": ["region1", "region2"],
-      "sdg_goals": [1, 2, 3],
-      "related_problems": ["problem-id-1", "problem-id-2"],
-      "existing_solutions": ["solution-id-1", "solution-id-2"],
-      "data_sources": ["source1", "source2"],
-      "last_updated": "2024-01-01"
-    }
-  ],
-  "solutions": [
-    {
-      "id": "solution-id",
-      "title": "Solution Title",
-      "description": "Detailed solution description",
-      "type": "technology|policy|social|economic",
-      "effectiveness_score": 85,
-      "implementation_status": "concept|pilot|scaled|mature",
-      "target_problems": ["problem-id-1", "problem-id-2"],
-      "sdg_goals": [1, 2, 3],
-      "stakeholders": ["stakeholder1", "stakeholder2"],
-      "geographic_reach": ["region1", "region2"],
-      "funding_sources": ["source1", "source2"],
-      "success_metrics": ["metric1", "metric2"],
-      "challenges": ["challenge1", "challenge2"],
-      "scalability_potential": 80,
-      "cost_effectiveness": 75,
-      "last_updated": "2024-01-01"
-    }
-  ],
-  "sdgs": [
-    {
-      "id": 1,
-      "title": "No Poverty",
-      "description": "End poverty in all its forms everywhere",
-      "targets": ["target1", "target2"],
-      "indicators": ["indicator1", "indicator2"],
-      "related_problems": ["problem-id-1", "problem-id-2"],
-      "related_solutions": ["solution-id-1", "solution-id-2"],
-      "progress_status": "on_track|challenging|off_track",
-      "priority_areas": ["area1", "area2"],
-      "funding_requirements": 1000000,
-      "timeline": "2030"
-    }
-  ],
-  "connections": [
-    {
-      "from": "problem-id",
-      "to": "solution-id",
-      "type": "addresses|supports|conflicts|enables|requires",
-      "strength": 0.8,
-      "description": "Connection description"
-    }
-  ],
-  "last_updated": "2024-01-01",
-  "total_nodes": 50,
-  "total_connections": 100
-}
-
-Guidelines:
-- Generate 10-15 global problems across different categories
-- Include 15-20 existing solutions with diverse types and effectiveness scores
-- Connect problems to relevant SDG goals (1-17)
-- Create meaningful connections between problems and solutions
-- Include realistic data about affected populations and geographic scope
-- Ensure solutions address the problems they target
-- Include both successful and emerging solutions
-- Consider global, regional, and local perspectives
-- Include diverse stakeholders and funding sources
-- Provide realistic timelines and progress status
-- Focus on ${category === "all" ? "diverse global challenges" : `${category} challenges`}
-- ${sdgFilter ? `Prioritize solutions and problems related to SDG ${sdgFilter}` : "Include all SDG goals"}
-
-Return ONLY valid JSON, no markdown or extra text.`
-
-  return await callGeminiAPI(prompt, 2048)
-}
-
-export async function generateEthicalImpactSummary(
-  blueprint: any,
-  solution?: any,
-  problemStatement?: any
-): Promise<GeminiResponse> {
-  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
-
-Blueprint: ${JSON.stringify(blueprint, null, 2)}
-${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
-${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
-
-Generate a detailed JSON ethical impact summary with the following structure:
-{
-  "overall_score": 75,
-  "bias_detection": [
-    {
-      "type": "demographic|cultural|geographic|economic|technological|gender|age",
-      "severity": "low|medium|high|critical",
-      "description": "Detailed description of the bias",
-      "affected_groups": ["group1", "group2"],
-      "mitigation_strategies": ["strategy1", "strategy2"],
-      "confidence_score": 85
-    }
-  ],
-  "ethical_concerns": [
-    {
-      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
-      "severity": "low|medium|high|critical",
-      "description": "Description of the ethical concern",
-      "impact_assessment": "Detailed impact assessment",
-      "recommended_actions": ["action1", "action2"],
-      "compliance_requirements": ["requirement1", "requirement2"],
-      "risk_level": 70
-    }
-  ],
-  "impact_analysis": {
-    "positive_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "negative_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "unintended_consequences": ["consequence1", "consequence2"],
-    "long_term_effects": ["effect1", "effect2"],
-    "stakeholder_impacts": {
-      "users": {
-        "positive": ["positive1"],
-        "negative": ["negative1"],
-        "neutral": ["neutral1"]
-      }
-    }
-  },
-  "compliance_checks": [
-    {
-      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
-      "status": "compliant|partial|non_compliant|not_applicable",
-      "requirements": ["req1", "req2"],
-      "gaps": ["gap1", "gap2"],
-      "recommendations": ["rec1", "rec2"],
-      "priority": "low|medium|high|critical"
-    }
-  ],
-  "recommendations": ["recommendation1", "recommendation2"],
-  "risk_assessment": {
-    "overall_risk": "low|medium|high|critical",
-    "risk_factors": ["factor1", "factor2"],
-    "mitigation_plan": ["plan1", "plan2"]
-  },
-  "transparency_report": {
-    "data_sources": ["source1", "source2"],
-    "methodology": ["method1", "method2"],
-    "limitations": ["limitation1", "limitation2"],
-    "assumptions": ["assumption1", "assumption2"]
-  },
-  "last_updated": "2024-01-01"
-}
-
-Guidelines:
-- Conduct comprehensive bias detection across all relevant dimensions
-- Identify ethical concerns across privacy, fairness, transparency, and safety
-- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
-- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
-- Provide actionable recommendations for ethical implementation
-- Assess overall risk level and create mitigation plans
-- Ensure transparency in methodology and data sources
-- Consider unintended consequences and long-term effects
-- Evaluate stakeholder impacts comprehensively
-- Provide specific, actionable recommendations
-
-Return ONLY valid JSON, no markdown or extra text.`
 
   return await callGeminiAPI(prompt, 2048)
 }
@@ -1181,304 +277,6 @@ Guidelines:
 - Provide realistic timelines and resource requirements
 
 Return ONLY a valid JSON array of solutions, no markdown or extra text.`
-
-  return await callGeminiAPI(prompt, 2048)
-}
-
-export async function generateEthicalImpactSummary(
-  blueprint: any,
-  solution?: any,
-  problemStatement?: any
-): Promise<GeminiResponse> {
-  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
-
-Blueprint: ${JSON.stringify(blueprint, null, 2)}
-${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
-${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
-
-Generate a detailed JSON ethical impact summary with the following structure:
-{
-  "overall_score": 75,
-  "bias_detection": [
-    {
-      "type": "demographic|cultural|geographic|economic|technological|gender|age",
-      "severity": "low|medium|high|critical",
-      "description": "Detailed description of the bias",
-      "affected_groups": ["group1", "group2"],
-      "mitigation_strategies": ["strategy1", "strategy2"],
-      "confidence_score": 85
-    }
-  ],
-  "ethical_concerns": [
-    {
-      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
-      "severity": "low|medium|high|critical",
-      "description": "Description of the ethical concern",
-      "impact_assessment": "Detailed impact assessment",
-      "recommended_actions": ["action1", "action2"],
-      "compliance_requirements": ["requirement1", "requirement2"],
-      "risk_level": 70
-    }
-  ],
-  "impact_analysis": {
-    "positive_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "negative_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "unintended_consequences": ["consequence1", "consequence2"],
-    "long_term_effects": ["effect1", "effect2"],
-    "stakeholder_impacts": {
-      "users": {
-        "positive": ["positive1"],
-        "negative": ["negative1"],
-        "neutral": ["neutral1"]
-      }
-    }
-  },
-  "compliance_checks": [
-    {
-      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
-      "status": "compliant|partial|non_compliant|not_applicable",
-      "requirements": ["req1", "req2"],
-      "gaps": ["gap1", "gap2"],
-      "recommendations": ["rec1", "rec2"],
-      "priority": "low|medium|high|critical"
-    }
-  ],
-  "recommendations": ["recommendation1", "recommendation2"],
-  "risk_assessment": {
-    "overall_risk": "low|medium|high|critical",
-    "risk_factors": ["factor1", "factor2"],
-    "mitigation_plan": ["plan1", "plan2"]
-  },
-  "transparency_report": {
-    "data_sources": ["source1", "source2"],
-    "methodology": ["method1", "method2"],
-    "limitations": ["limitation1", "limitation2"],
-    "assumptions": ["assumption1", "assumption2"]
-  },
-  "last_updated": "2024-01-01"
-}
-
-Guidelines:
-- Conduct comprehensive bias detection across all relevant dimensions
-- Identify ethical concerns across privacy, fairness, transparency, and safety
-- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
-- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
-- Provide actionable recommendations for ethical implementation
-- Assess overall risk level and create mitigation plans
-- Ensure transparency in methodology and data sources
-- Consider unintended consequences and long-term effects
-- Evaluate stakeholder impacts comprehensively
-- Provide specific, actionable recommendations
-
-Return ONLY valid JSON, no markdown or extra text.`
-
-  return await callGeminiAPI(prompt, 2048)
-}
-
-export async function generateKnowledgeGraph(
-  searchQuery: string,
-  category: string,
-  sdgFilter: number | null
-): Promise<GeminiResponse> {
-  const prompt = `You are an expert in global development and knowledge management. Generate a comprehensive knowledge graph that connects global problems, existing solutions, and SDG goals.
-
-Search Parameters:
-- Query: ${searchQuery || "Global challenges and solutions"}
-- Category: ${category}
-- SDG Filter: ${sdgFilter ? `SDG ${sdgFilter}` : "All SDGs"}
-
-Generate a detailed JSON knowledge graph with the following structure:
-{
-  "problems": [
-    {
-      "id": "problem-id",
-      "title": "Problem Title",
-      "description": "Detailed problem description",
-      "category": "climate|health|education|poverty|inequality|technology|environment|governance|infrastructure",
-      "severity": "low|medium|high|critical",
-      "affected_population": 1000000,
-      "geographic_scope": ["region1", "region2"],
-      "sdg_goals": [1, 2, 3],
-      "related_problems": ["problem-id-1", "problem-id-2"],
-      "existing_solutions": ["solution-id-1", "solution-id-2"],
-      "data_sources": ["source1", "source2"],
-      "last_updated": "2024-01-01"
-    }
-  ],
-  "solutions": [
-    {
-      "id": "solution-id",
-      "title": "Solution Title",
-      "description": "Detailed solution description",
-      "type": "technology|policy|social|economic",
-      "effectiveness_score": 85,
-      "implementation_status": "concept|pilot|scaled|mature",
-      "target_problems": ["problem-id-1", "problem-id-2"],
-      "sdg_goals": [1, 2, 3],
-      "stakeholders": ["stakeholder1", "stakeholder2"],
-      "geographic_reach": ["region1", "region2"],
-      "funding_sources": ["source1", "source2"],
-      "success_metrics": ["metric1", "metric2"],
-      "challenges": ["challenge1", "challenge2"],
-      "scalability_potential": 80,
-      "cost_effectiveness": 75,
-      "last_updated": "2024-01-01"
-    }
-  ],
-  "sdgs": [
-    {
-      "id": 1,
-      "title": "No Poverty",
-      "description": "End poverty in all its forms everywhere",
-      "targets": ["target1", "target2"],
-      "indicators": ["indicator1", "indicator2"],
-      "related_problems": ["problem-id-1", "problem-id-2"],
-      "related_solutions": ["solution-id-1", "solution-id-2"],
-      "progress_status": "on_track|challenging|off_track",
-      "priority_areas": ["area1", "area2"],
-      "funding_requirements": 1000000,
-      "timeline": "2030"
-    }
-  ],
-  "connections": [
-    {
-      "from": "problem-id",
-      "to": "solution-id",
-      "type": "addresses|supports|conflicts|enables|requires",
-      "strength": 0.8,
-      "description": "Connection description"
-    }
-  ],
-  "last_updated": "2024-01-01",
-  "total_nodes": 50,
-  "total_connections": 100
-}
-
-Guidelines:
-- Generate 10-15 global problems across different categories
-- Include 15-20 existing solutions with diverse types and effectiveness scores
-- Connect problems to relevant SDG goals (1-17)
-- Create meaningful connections between problems and solutions
-- Include realistic data about affected populations and geographic scope
-- Ensure solutions address the problems they target
-- Include both successful and emerging solutions
-- Consider global, regional, and local perspectives
-- Include diverse stakeholders and funding sources
-- Provide realistic timelines and progress status
-- Focus on ${category === "all" ? "diverse global challenges" : `${category} challenges`}
-- ${sdgFilter ? `Prioritize solutions and problems related to SDG ${sdgFilter}` : "Include all SDG goals"}
-
-Return ONLY valid JSON, no markdown or extra text.`
-
-  return await callGeminiAPI(prompt, 2048)
-}
-
-export async function generateEthicalImpactSummary(
-  blueprint: any,
-  solution?: any,
-  problemStatement?: any
-): Promise<GeminiResponse> {
-  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
-
-Blueprint: ${JSON.stringify(blueprint, null, 2)}
-${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
-${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
-
-Generate a detailed JSON ethical impact summary with the following structure:
-{
-  "overall_score": 75,
-  "bias_detection": [
-    {
-      "type": "demographic|cultural|geographic|economic|technological|gender|age",
-      "severity": "low|medium|high|critical",
-      "description": "Detailed description of the bias",
-      "affected_groups": ["group1", "group2"],
-      "mitigation_strategies": ["strategy1", "strategy2"],
-      "confidence_score": 85
-    }
-  ],
-  "ethical_concerns": [
-    {
-      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
-      "severity": "low|medium|high|critical",
-      "description": "Description of the ethical concern",
-      "impact_assessment": "Detailed impact assessment",
-      "recommended_actions": ["action1", "action2"],
-      "compliance_requirements": ["requirement1", "requirement2"],
-      "risk_level": 70
-    }
-  ],
-  "impact_analysis": {
-    "positive_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "negative_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "unintended_consequences": ["consequence1", "consequence2"],
-    "long_term_effects": ["effect1", "effect2"],
-    "stakeholder_impacts": {
-      "users": {
-        "positive": ["positive1"],
-        "negative": ["negative1"],
-        "neutral": ["neutral1"]
-      }
-    }
-  },
-  "compliance_checks": [
-    {
-      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
-      "status": "compliant|partial|non_compliant|not_applicable",
-      "requirements": ["req1", "req2"],
-      "gaps": ["gap1", "gap2"],
-      "recommendations": ["rec1", "rec2"],
-      "priority": "low|medium|high|critical"
-    }
-  ],
-  "recommendations": ["recommendation1", "recommendation2"],
-  "risk_assessment": {
-    "overall_risk": "low|medium|high|critical",
-    "risk_factors": ["factor1", "factor2"],
-    "mitigation_plan": ["plan1", "plan2"]
-  },
-  "transparency_report": {
-    "data_sources": ["source1", "source2"],
-    "methodology": ["method1", "method2"],
-    "limitations": ["limitation1", "limitation2"],
-    "assumptions": ["assumption1", "assumption2"]
-  },
-  "last_updated": "2024-01-01"
-}
-
-Guidelines:
-- Conduct comprehensive bias detection across all relevant dimensions
-- Identify ethical concerns across privacy, fairness, transparency, and safety
-- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
-- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
-- Provide actionable recommendations for ethical implementation
-- Assess overall risk level and create mitigation plans
-- Ensure transparency in methodology and data sources
-- Consider unintended consequences and long-term effects
-- Evaluate stakeholder impacts comprehensively
-- Provide specific, actionable recommendations
-
-Return ONLY valid JSON, no markdown or extra text.`
 
   return await callGeminiAPI(prompt, 2048)
 }
@@ -1602,106 +400,6 @@ Guidelines:
 - Ensure milestones have clear dependencies
 - Consider resource constraints and team capabilities
 - Align with solution requirements and problem context
-
-Return ONLY valid JSON, no markdown or extra text.`
-
-  return await callGeminiAPI(prompt, 2048)
-}
-
-export async function generateEthicalImpactSummary(
-  blueprint: any,
-  solution?: any,
-  problemStatement?: any
-): Promise<GeminiResponse> {
-  const prompt = `You are an expert in AI ethics, bias detection, and responsible innovation. Generate a comprehensive ethical impact summary for the following innovation blueprint.
-
-Blueprint: ${JSON.stringify(blueprint, null, 2)}
-${solution ? `Solution: ${JSON.stringify(solution, null, 2)}` : ''}
-${problemStatement ? `Problem Statement: ${JSON.stringify(problemStatement, null, 2)}` : ''}
-
-Generate a detailed JSON ethical impact summary with the following structure:
-{
-  "overall_score": 75,
-  "bias_detection": [
-    {
-      "type": "demographic|cultural|geographic|economic|technological|gender|age",
-      "severity": "low|medium|high|critical",
-      "description": "Detailed description of the bias",
-      "affected_groups": ["group1", "group2"],
-      "mitigation_strategies": ["strategy1", "strategy2"],
-      "confidence_score": 85
-    }
-  ],
-  "ethical_concerns": [
-    {
-      "category": "privacy|transparency|accountability|fairness|safety|autonomy|sustainability",
-      "severity": "low|medium|high|critical",
-      "description": "Description of the ethical concern",
-      "impact_assessment": "Detailed impact assessment",
-      "recommended_actions": ["action1", "action2"],
-      "compliance_requirements": ["requirement1", "requirement2"],
-      "risk_level": 70
-    }
-  ],
-  "impact_analysis": {
-    "positive_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "negative_impacts": {
-      "social": ["impact1", "impact2"],
-      "environmental": ["impact1", "impact2"],
-      "economic": ["impact1", "impact2"],
-      "technological": ["impact1", "impact2"]
-    },
-    "unintended_consequences": ["consequence1", "consequence2"],
-    "long_term_effects": ["effect1", "effect2"],
-    "stakeholder_impacts": {
-      "users": {
-        "positive": ["positive1"],
-        "negative": ["negative1"],
-        "neutral": ["neutral1"]
-      }
-    }
-  },
-  "compliance_checks": [
-    {
-      "framework": "GDPR|CCPA|HIPAA|ISO27001|SOC2|UN_AI_Principles|IEEE_Ethics",
-      "status": "compliant|partial|non_compliant|not_applicable",
-      "requirements": ["req1", "req2"],
-      "gaps": ["gap1", "gap2"],
-      "recommendations": ["rec1", "rec2"],
-      "priority": "low|medium|high|critical"
-    }
-  ],
-  "recommendations": ["recommendation1", "recommendation2"],
-  "risk_assessment": {
-    "overall_risk": "low|medium|high|critical",
-    "risk_factors": ["factor1", "factor2"],
-    "mitigation_plan": ["plan1", "plan2"]
-  },
-  "transparency_report": {
-    "data_sources": ["source1", "source2"],
-    "methodology": ["method1", "method2"],
-    "limitations": ["limitation1", "limitation2"],
-    "assumptions": ["assumption1", "assumption2"]
-  },
-  "last_updated": "2024-01-01"
-}
-
-Guidelines:
-- Conduct comprehensive bias detection across all relevant dimensions
-- Identify ethical concerns across privacy, fairness, transparency, and safety
-- Analyze both positive and negative impacts across social, environmental, economic, and technological dimensions
-- Check compliance with major frameworks (GDPR, CCPA, UN AI Principles, etc.)
-- Provide actionable recommendations for ethical implementation
-- Assess overall risk level and create mitigation plans
-- Ensure transparency in methodology and data sources
-- Consider unintended consequences and long-term effects
-- Evaluate stakeholder impacts comprehensively
-- Provide specific, actionable recommendations
 
 Return ONLY valid JSON, no markdown or extra text.`
 
